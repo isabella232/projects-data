@@ -6,7 +6,6 @@ from scipy.spatial.distance import pdist
 import scipy.spatial.distance as ssd
 import matplotlib.pyplot as plt
 import pandas as pd
-from pandas.core.dtypes.common import _ensure_float64
 
 """
     Support method for populating the patient to concepts matrix.
