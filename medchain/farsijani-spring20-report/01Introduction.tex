@@ -1,0 +1,28 @@
+\subsection{Problem Definition and Objectives}
+
+In this project, we aim to implement a distributed authorization system for medical queries, called MedChain that was designed and partly implemented in a previous project. We also intend to make this system specifically compatible with the ecosystem of \href{https://medco.epfl.ch/}{MedCo} and integrate it with it. MedCo is an existing technology that enables privacy-preserving analysis and sharing of medical data. In MedCo, authentication and authorization are centralized; we aim to integrate MedChain into MedCo in order to enable distributed authorization and avoid single point of failure introduced by the centralized system. Furthermore, in MedChain, we introduce distributed immutable logging of system transactions which allows auditability of activities and queries and can thus be used to prevent malicious activity or data misuse. 
+
+
+
+% MedCo already has authentication and authorization mechanisms in place, however, they have some drawbacks which Medchain tries to address. First, in the current implementation of MedCo, both authentication and authorization are centralized. This introduces a single point of failure in the whole ecosystem and has to be avoided. Second, hospitals and medical institutions that participate in MedCo cluster have their own identity providers and run access management protocols individually as these processes can not be done in a federated manner. Our proposed software system, Medchain, offers solutions for such shortcomings. It also puts forward other sought-after properties, such as auditability by recording all the queries submitted to it in a blockchain, which is explained in more details later in this report. 
+
+% Some intro and general ideas about the project and how it is relevant to MedCo. Then speaking \textbf{briefly} about what was done last semester and finally the goals and achievements of this semester's project and how it complements the previous work. (Throughout the report, I will make sure that I focus on what has been done this semester, especially, if there are references to work done last semester.)
+
+\subsection{Threat Model}
+In this section, we explain the adversaries that we considered during system design and implementation. For every adversary, we consider the scope for their capabilities as well the risks they incur to the system.
+
+MedChain is responsible for distributed authorization of medical queries submitted to MedCo and is thus part of a MedCo network. MedCo network consists of a clinical research network that includes several clinical sites organized in a decentralized federation. Clinical sites provide databases that are maintained and monitored separately. There are also investigators who use MedCo to explore medical data \cite{raisaro2017medco}. Before authenticated investigators can access the data, they need to be \textbf{authorized by MedChain}. Hence, the following adversaries are considered:
+
+\paragraph{Clinical sites:} In general, clinical sites are assumed to provide correct information. However, sites do not necessarily trust each other. 
+
+\paragraph{Regular user/investigator:} This could be a typical user, such as an authorized nurse or physician at a clinical site's research department, who accesses the clinical data and is assumed to be honest-but-curious (HBC) adversary.  
+
+\paragraph{(Tech-savvy) investigators:} This includes authorized investigators as well as black-hat or white-hat hackers who are assumed to be malicious-but-covert (MBC) adversaries as they may try to DOS the system or infer data by performing multiple queries of data. 
+
+\subsection{Requirements}
+MedChain should allow distributed authorization of MedCo queries based on defined and agreed multi-signature rules, i.e., authenticated users should be able to query certain sensitive information only after the access management rules have been met. Furthermore, while checking the authorizations of users for their queries, MedChain should keep an immutable and distributed record of all queries submitted to MedCo so that the system can be audited and malicious activities, attacks, or data leakage can be identified and prevented. Last but not least, as part of MedCo ecosystem, MedChain should be able to work seamlessly with all systems that function within MedCo ecosystem, most prominently, \href{https://github.com/ldsec/medco-connector}{MedCo-connector} that orchestrates MedCo queries. 
+
+% \subsection{Report Outline}
+% In this report, we first provide some background information on the underlying technologies used in Medchain deployment in Section \ref{section2}. Next, in Section \ref{section3}, design and architecture of Medchain is presented and discussed. In Section \ref{section4}, we give a full descriptions of our solution, its software design and building blocks. Later, in Section \ref{section5}, we discuss the performance of our software solution and its limitations. In Section \ref{section6}, we discuss the future opportunities to improve the solution and, finally, we finish with conclusions in Section \ref{section7}.
+
+% Very brief overview of various sections of the report. (not needed maybe??)
