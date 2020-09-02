@@ -75,8 +75,8 @@ def fix_dummy_duplicate(histogram, dummy_patient, clusters_labels, patient_conce
         patient_cluster = dummy_patient[current_cluster.index].copy()
         
         # takes histogram values and sort them
-        codes_set_to_1 = current_cluster[patient_cluster == 1].sort_values(ascending=False)
-        codes_set_to_0 = current_cluster[patient_cluster == 0].sort_values(ascending=True)
+        codes_set_to_1 = current_cluster[patient_cluster == 1].sort_values(ascending=False).index
+        codes_set_to_0 = current_cluster[patient_cluster == 0].sort_values(ascending=True).index
         
         if (codes_set_to_1.shape[0] == 0 or codes_set_to_0.shape[0] == 0):
             raise ValueError("The patient that was replicated for dummy generation has a cluster with all the codes or a cluster with no code. Perform the clustering again with a greater minimum anonymity set")
@@ -137,7 +137,7 @@ def perform_shuffle(patient_row, clustered_histogram, histogram_dummies, cluster
         else:
             # always include all the codes that need occurrences
             # also include the codes that already have reached the need number of occurrences (but take the ones that appear less often)
-            k_indices = current_cluster.values.argpartition(k)
+            k_indices = current_cluster.values.argpartition(k - 1)
             k_min_codes = current_cluster[k_indices[:k]].index
 
             patient_cluster[patient_cluster.index] = 0
