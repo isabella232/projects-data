@@ -1,0 +1,4 @@
+The CalCOFI data set represents the longest (1949-present) and most complete (more than 50,000 sampling stations) time series of oceanographic and larval fish data in the world.
+
+https://www.kaggle.com/sohier/calcofi
+https://www.kaggle.com/dylankfernandes/calcofi-salinity-vs-temperature
