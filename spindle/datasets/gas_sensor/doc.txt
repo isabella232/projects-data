@@ -1,0 +1,6 @@
+This data set contains the acquired time series from 16 chemical sensors exposed to gas mixtures at varying concentration levels.
+In particular, we generated two gas mixtures: Ethylene and Methane in air, and Ethylene and CO in air.
+Each measurement was constructed by the continuous acquisition of the 16-sensor array signals for a duration of about 12 hours without interruption.
+
+http://archive.ics.uci.edu/ml/datasets/gas+sensor+array+under+dynamic+gas+mixtures#
+
