@@ -1,9 +1,10 @@
-from haiku_dropout import Dropout
 import collections
 import numpy as np
 import haiku as hk
-from metrics import *
+from fedjax import core
 
+from federated_library.metrics import mse
+from federated_library.haiku_dropout import Dropout
 
 def get_model(params, ds_info, custom_model=None):
     """ Get default haiku model for mnist, emnist, svhn or cifar10

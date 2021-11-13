@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow_federated as tff
-from display_distribution import *
+import collections
+from matplotlib import pyplot as plt
+from federated_library.display_distribution import display_heatmap, display_per_client_barplot
 
 
 def to_ClientData(clientsData: np.ndarray, clientsDataLabels: np.ndarray,
@@ -49,7 +51,8 @@ def build_ClientData_from_dataidx_map(x_train: np.ndarray, y_train: np.ndarray, 
     clientsDataLabels = np.zeros(num_clients, dtype=object)
 
     for i in range(num_clients):
-        clientData = np.zeros((numSamplesPerClient[i], sample_height, sample_width, sample_channels))
+        clientData = np.zeros(
+            (numSamplesPerClient[i], sample_height, sample_width, sample_channels))
 
         if not decentralized:
             clientDataLabels = np.zeros((numSamplesPerClient[i]))
@@ -68,8 +71,10 @@ def build_ClientData_from_dataidx_map(x_train: np.ndarray, y_train: np.ndarray, 
         clientsDataLabels[i] = clientDataLabels
 
     if display:
-        display_heatmap(dataidx_map, num_classes=num_classes, num_clients=num_clients, labels=y_train, decentralized=decentralized)
-        display_per_client_barplot(clientsDataLabels, num_classes=num_classes, num_clients=num_clients, decentralized=decentralized)
+        display_heatmap(dataidx_map, num_classes=num_classes,
+                        num_clients=num_clients, labels=y_train, decentralized=decentralized)
+        display_per_client_barplot(clientsDataLabels, num_classes=num_classes,
+                                   num_clients=num_clients, decentralized=decentralized)
 
     if not decentralized:
         return to_ClientData(clientsData, clientsDataLabels, ds_info)
@@ -100,12 +105,14 @@ def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, decentralized
 
     sample_height, sample_width, sample_channels = sample_shape
 
-    clientsData = np.zeros((num_clients, int(numSamplesPerClient), sample_height, sample_width, sample_channels))
+    clientsData = np.zeros((num_clients, int(
+        numSamplesPerClient), sample_height, sample_width, sample_channels))
 
     if not decentralized:
         clientsDataLabels = np.zeros((num_clients, int(numSamplesPerClient)))
     else:
-        clientsDataLabels = np.zeros((num_clients, int(numSamplesPerClient), num_classes))
+        clientsDataLabels = np.zeros(
+            (num_clients, int(numSamplesPerClient), num_classes))
 
     ind = 0
     for i in range(num_clients):
@@ -114,7 +121,8 @@ def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, decentralized
         ind = ind + numSamplesPerClient
 
     if display:
-        display_per_client_barplot(clientsDataLabels, num_classes=num_classes, num_clients=num_clients, decentralized=decentralized)
+        display_per_client_barplot(clientsDataLabels, num_classes=num_classes,
+                                   num_clients=num_clients, decentralized=decentralized)
 
     if not decentralized:
         return to_ClientData(clientsData, clientsDataLabels, ds_info)
@@ -177,7 +185,8 @@ def label_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, 
     if not decentralized:
         y_train_uncat = y_train
     else:
-        y_train_uncat = np.array([np.argmax(label_cat) for label_cat in y_train])
+        y_train_uncat = np.array([np.argmax(label_cat)
+                                 for label_cat in y_train])
 
     N = y_train_uncat.shape[0]
     np.random.seed(seed)
@@ -186,19 +195,22 @@ def label_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, 
     while min_size < min_require_size:
         idx_batch = [[] for _ in range(num_clients)]
         for k in range(K):
-            ## get indices for class k
+            # get indices for class k
             idx_k = np.where(y_train_uncat == k)[0]
             np.random.shuffle(idx_k)
             proportions = np.random.dirichlet(np.repeat(beta, num_clients))
 
-            ## Balance
-            proportions = np.array([p * (len(idx_j) < N / num_clients) for p, idx_j in zip(proportions, idx_batch)])
+            # Balance
+            proportions = np.array([p * (len(idx_j) < N / num_clients)
+                                   for p, idx_j in zip(proportions, idx_batch)])
 
             proportions = proportions / proportions.sum()
 
-            proportions = (np.cumsum(proportions) * len(idx_k)).astype(int)[:-1]
+            proportions = (np.cumsum(proportions) *
+                           len(idx_k)).astype(int)[:-1]
 
-            idx_batch = [idx_j + idx.tolist() for idx_j, idx in zip(idx_batch, np.split(idx_k, proportions))]
+            idx_batch = [idx_j + idx.tolist() for idx_j,
+                         idx in zip(idx_batch, np.split(idx_k, proportions))]
             min_size = min([len(idx_j) for idx_j in idx_batch])
 
     for j in range(num_clients):
@@ -230,37 +242,44 @@ def feature_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, sigm
         return np.random.normal(scale=sigma_i, size=(sample_height, sample_width, sample_channels))
 
     if not decentralized:
-        dataset_iid = iid_distrib(x_train, y_train, ds_info, decentralized=decentralized, display=display)
+        dataset_iid = iid_distrib(
+            x_train, y_train, ds_info, decentralized=decentralized, display=display)
 
         clientsData = np.zeros(num_clients, dtype=object)
         clientsDataLabels = np.zeros(num_clients, dtype=object)
 
         for i in range(num_clients):
 
-            client_ds = dataset_iid.create_tf_dataset_for_client(dataset_iid.client_ids[i])
+            client_ds = dataset_iid.create_tf_dataset_for_client(
+                dataset_iid.client_ids[i])
             client_ds = list(client_ds.as_numpy_iterator())
 
             client_ds_len = len(client_ds)
 
-            clientData = np.zeros((client_ds_len, sample_height, sample_width, sample_channels))
+            clientData = np.zeros(
+                (client_ds_len, sample_height, sample_width, sample_channels))
 
             clientDataLabels = np.zeros(client_ds_len)
 
             for j, sample in enumerate(client_ds):
                 # Add gaussian noise to the sample
-                clientData[j] = np.maximum([0.0], np.minimum([1.0], sample['x'] + noise(sigma * float(i) / float(num_clients-1))))
+                clientData[j] = np.maximum([0.0], np.minimum(
+                    [1.0], sample['x'] + noise(sigma * float(i) / float(num_clients-1))))
                 clientDataLabels[j] = sample['y']
 
                 if display and j == 0:
-                    plt.imshow(sample['x'].reshape(sample_height, sample_width, sample_channels))
+                    plt.imshow(sample['x'].reshape(
+                        sample_height, sample_width, sample_channels))
                     plt.show()
-                    plt.imshow(clientData[j].reshape(sample_height, sample_width, sample_channels))
+                    plt.imshow(clientData[j].reshape(
+                        sample_height, sample_width, sample_channels))
                     plt.show()
 
             clientsData[i] = clientData
             clientsDataLabels[i] = clientDataLabels
     else:
-        clientsData, clientsDataLabels = iid_distrib(x_train, y_train, ds_info, decentralized=decentralized, display=display)
+        clientsData, clientsDataLabels = iid_distrib(
+            x_train, y_train, ds_info, decentralized=decentralized, display=display)
 
         for i in range(num_clients):
 
@@ -268,16 +287,20 @@ def feature_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, sigm
 
             client_ds_len = len(client_ds)
 
-            clientData = np.zeros((client_ds_len, sample_height, sample_width, sample_channels))
+            clientData = np.zeros(
+                (client_ds_len, sample_height, sample_width, sample_channels))
 
             for j, sample in enumerate(client_ds):
                 # Add gaussian noise to the sample
-                clientData[j] = np.maximum([0.0], np.minimum([1.0], sample + noise(sigma * float(i) / float(num_clients-1))))
+                clientData[j] = np.maximum([0.0], np.minimum(
+                    [1.0], sample + noise(sigma * float(i) / float(num_clients-1))))
 
                 if display and j == 0:
-                    plt.imshow(sample.reshape(sample_height, sample_width, sample_channels))
+                    plt.imshow(sample.reshape(sample_height,
+                               sample_width, sample_channels))
                     plt.show()
-                    plt.imshow(clientData[j].reshape(sample_height, sample_width, sample_channels))
+                    plt.imshow(clientData[j].reshape(
+                        sample_height, sample_width, sample_channels))
                     plt.show()
 
             clientsData[i] = clientData

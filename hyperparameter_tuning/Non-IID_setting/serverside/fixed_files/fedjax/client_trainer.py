@@ -258,6 +258,7 @@ def train_multiple_clients(
       input `init_client_trainer_state`. However, output is flexible.
   """
   should_run_parallel = True
+  # CHANGED
   """(FLAGS.fedjax_experimental_disable_parallel == 'false' or
   (FLAGS.fedjax_experimental_disable_parallel == 'auto' and
    jax.local_device_count() > 1))"""

@@ -9,4 +9,3 @@ rm -rf poseidon_dec/
 rm -rf poseidon_fed/
 rm -rf __pycache__/
 rm -rf nohup.out
-rm -rf *.py

@@ -21,10 +21,8 @@ fi
 
 # Clean old environment
 echo "Cleaning old environment"
-rm -rf poseidon_fed/
-rm -rf nohup.out
-echo "Killing old notebook"
-pkill -f "jupyter.*8891"
+./clean.sh
+sleep 1
 
 # Create and activate new environment
 echo "Creating fresh virtual environment"
@@ -55,14 +53,6 @@ echo -ne "\n"
 # Replace files
 ./fedjax_replace.sh
 
-# Copy federated library files
-cp federated_library/*.py .
 
 # Launch jupyter
-nohup jupyter notebook --no-browser --allow-root --port=8891 &
-echo "Jupyter notebook launched on port 8891"
-
-sleep 2
-
-# Get notebook token
-jupyter notebook list
+./run.sh

@@ -1,7 +1,8 @@
-from distributions import *
-from models_haiku import get_model
 import fedjax
 from fedjax import core
+
+from federated_library.models_haiku import get_model
+from federated_library.distributions import qty_skew_distrib, label_skew_distrib, feature_skew_distrib, iid_distrib
 
 
 def train_fedAvg(params, ds, test_split, ds_info, custom_model=None, display=False):
@@ -23,16 +24,20 @@ def train_fedAvg(params, ds, test_split, ds_info, custom_model=None, display=Fal
 
     if skew_type == "qty":
         print("Quantity skew")
-        federated_data = qty_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)
+        federated_data = qty_skew_distrib(
+            x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)
     elif skew_type == "label":
         print("Label skew")
-        federated_data = label_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)
+        federated_data = label_skew_distrib(
+            x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)
     elif skew_type == "feature":
         print("Feature skew")
-        federated_data = feature_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)
+        federated_data = feature_skew_distrib(
+            x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)
     else:
         print("IID distribution")
-        federated_data = iid_distrib(x_train, y_train, ds_info, decentralized=False, display=display)
+        federated_data = iid_distrib(
+            x_train, y_train, ds_info, decentralized=False, display=display)
 
     model = get_model(params, ds_info, custom_model)
 
@@ -54,6 +59,7 @@ def train_fedAvg(params, ds, test_split, ds_info, custom_model=None, display=Fal
     for _ in range(params['rounds']):
         state = algorithm.run_round(state, federated_data.client_ids)
 
-    test_metrics = core.evaluate_single_client(dataset=test_split, model=model, params=state.params)
+    test_metrics = core.evaluate_single_client(
+        dataset=test_split, model=model, params=state.params)
 
     return test_metrics

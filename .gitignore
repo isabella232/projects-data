@@ -104,3 +104,6 @@ venv.bak/
 .mypy_cache/
 
 .DS_Store
+
+hyperparameter_tuning/Non-IID_setting/serverside/poseidon_fed/
+hyperparameter_tuning/Non-IID_setting/serverside/nohup.out

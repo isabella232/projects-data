@@ -1,7 +1,7 @@
 import tensorflow_datasets as tfds
 import numpy as np
-from display_distribution import display_dataset_barplot
 from tensorflow.keras.utils import to_categorical
+from federated_library.display_distribution import display_dataset_barplot
 
 
 def load_tf_dataset(dataset_name: str, decentralized, skew_type="", display=True):
