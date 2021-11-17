@@ -1,12 +1,16 @@
-import numpy as np
-import tensorflow_federated as tff
 import collections
+import tensorflow_federated as tff
+import numpy as np
 from matplotlib import pyplot as plt
-from federated_library.display_distribution import display_heatmap, display_per_client_barplot
+from federated_library.display_distribution import display_heatmap,\
+    display_per_client_barplot
+from fedjax import InMemoryFederatedData
 
 
-def to_ClientData(clientsData: np.ndarray, clientsDataLabels: np.ndarray,
-                  ds_info, train=True):
+def to_ClientData(
+    clientsData: np.ndarray, clientsDataLabels: np.ndarray,
+    ds_info, is_train=True
+    ) -> tff.simulation.datasets.TestClientData:
     """Transform dataset to be fed to fedjax
 
     :param clientsData: dataset for each client
@@ -19,7 +23,7 @@ def to_ClientData(clientsData: np.ndarray, clientsDataLabels: np.ndarray,
 
     client_data = collections.OrderedDict()
 
-    for i in range(num_clients if train else 1):
+    for i in range(num_clients if is_train else 1):
         client_data[str(i)] = collections.OrderedDict(
             x=clientsData[i],
             y=clientsDataLabels[i])
@@ -27,7 +31,42 @@ def to_ClientData(clientsData: np.ndarray, clientsDataLabels: np.ndarray,
     return tff.simulation.datasets.TestClientData(client_data)
 
 
-def build_ClientData_from_dataidx_map(x_train: np.ndarray, y_train: np.ndarray, ds_info, dataidx_map, decentralized, display):
+def convert_to_federated_data(
+    clientsData: np.ndarray, clientsDataLabels: np.ndarray,
+    ds_info, is_train=True
+) -> InMemoryFederatedData:
+    """Transform dataset to be fed to fedjax
+
+    :param clientsData: dataset for each client
+    :param clientsDataLabels:
+    :param ds_info: dataset information
+    :param train: True if processing train split
+    :return: dataset for each client cast into InMemoryFederatedData
+    """
+    num_clients = ds_info['num_clients']
+
+    client_data = collections.OrderedDict()
+
+    if is_train:
+        for i in range(num_clients):
+            # print(f"Client {i}: {clientsData[i].shape} array.")
+            client_data[str(i)] = {
+                "x": clientsData[i],
+                "y": clientsDataLabels[i]
+            }
+    else:
+        # print(f"Test data: {clientsData.shape} array.")
+        client_data["0"] = {
+            "x": clientsData,
+            "y": clientsDataLabels
+        }
+
+    return InMemoryFederatedData(client_data)
+
+
+def build_ClientData_from_dataidx_map(
+        x_train: np.ndarray, y_train: np.ndarray,
+        ds_info, dataidx_map, decentralized, display):
     """Build dataset for each client based on  dataidx_map
 
     :param x_train: training split samples
@@ -54,10 +93,10 @@ def build_ClientData_from_dataidx_map(x_train: np.ndarray, y_train: np.ndarray, 
         clientData = np.zeros(
             (numSamplesPerClient[i], sample_height, sample_width, sample_channels))
 
-        if not decentralized:
-            clientDataLabels = np.zeros((numSamplesPerClient[i]))
-        else:
+        if decentralized:
             clientDataLabels = np.zeros((numSamplesPerClient[i], num_classes))
+        else:
+            clientDataLabels = np.zeros((numSamplesPerClient[i]))
 
         for j, s in enumerate(dataidx_map[i]):
             clientData[j] = x_train[s]
@@ -72,17 +111,19 @@ def build_ClientData_from_dataidx_map(x_train: np.ndarray, y_train: np.ndarray, 
 
     if display:
         display_heatmap(dataidx_map, num_classes=num_classes,
-                        num_clients=num_clients, labels=y_train, decentralized=decentralized)
+                        num_clients=num_clients, labels=y_train,
+                        decentralized=decentralized)
         display_per_client_barplot(clientsDataLabels, num_classes=num_classes,
                                    num_clients=num_clients, decentralized=decentralized)
 
-    if not decentralized:
-        return to_ClientData(clientsData, clientsDataLabels, ds_info)
-    else:
+    if decentralized:
         return clientsData, clientsDataLabels
+    # If federated setting
+    return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
 
 
-def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, decentralized, display=False):
+def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info,
+    decentralized, display=False, is_tf=False):
     """Build an iid distributed dataset for each client
 
     :param x_train: training split samples
@@ -108,11 +149,11 @@ def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, decentralized
     clientsData = np.zeros((num_clients, int(
         numSamplesPerClient), sample_height, sample_width, sample_channels))
 
-    if not decentralized:
-        clientsDataLabels = np.zeros((num_clients, int(numSamplesPerClient)))
-    else:
+    if decentralized:
         clientsDataLabels = np.zeros(
             (num_clients, int(numSamplesPerClient), num_classes))
+    else:
+        clientsDataLabels = np.zeros((num_clients, int(numSamplesPerClient)))
 
     ind = 0
     for i in range(num_clients):
@@ -124,10 +165,13 @@ def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, decentralized
         display_per_client_barplot(clientsDataLabels, num_classes=num_classes,
                                    num_clients=num_clients, decentralized=decentralized)
 
-    if not decentralized:
-        return to_ClientData(clientsData, clientsDataLabels, ds_info)
-    else:
+    if decentralized :
         return clientsData, clientsDataLabels
+    else:
+        if is_tf:
+            return to_ClientData(clientsData, clientsDataLabels, ds_info)
+        else:
+            return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
 
 
 def qty_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, decentralized, display=False):
@@ -217,10 +261,15 @@ def label_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, 
         np.random.shuffle(idx_batch[j])
         net_dataidx_map[j] = idx_batch[j]
 
-    return build_ClientData_from_dataidx_map(x_train, y_train, ds_info, net_dataidx_map, decentralized=decentralized, display=display)
+    return build_ClientData_from_dataidx_map(
+        x_train, y_train, ds_info, net_dataidx_map,
+        decentralized=decentralized, display=display
+    )
 
 
-def feature_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, sigma, decentralized, display=False):
+def feature_skew_distrib(
+        x_train: np.ndarray, y_train: np.ndarray, ds_info, sigma,
+        decentralized, display=False):
     """Build an feature-skewed distributed dataset for each client, adds a Gaussian noise of parameters N(0,
     (sigma * i/num_clients)**2) for each client i
 
@@ -239,17 +288,20 @@ def feature_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, sigm
     sample_height, sample_width, sample_channels = sample_shape
 
     def noise(sigma_i):
-        return np.random.normal(scale=sigma_i, size=(sample_height, sample_width, sample_channels))
+        return np.random.normal(
+            scale=sigma_i, size=(sample_height, sample_width, sample_channels)
+        )
 
     if not decentralized:
         dataset_iid = iid_distrib(
-            x_train, y_train, ds_info, decentralized=decentralized, display=display)
+            x_train, y_train, ds_info, decentralized=decentralized,
+            display=display, is_tf=True
+        )
 
         clientsData = np.zeros(num_clients, dtype=object)
         clientsDataLabels = np.zeros(num_clients, dtype=object)
 
         for i in range(num_clients):
-
             client_ds = dataset_iid.create_tf_dataset_for_client(
                 dataset_iid.client_ids[i])
             client_ds = list(client_ds.as_numpy_iterator())
@@ -277,6 +329,8 @@ def feature_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, sigm
 
             clientsData[i] = clientData
             clientsDataLabels[i] = clientDataLabels
+
+        return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
     else:
         clientsData, clientsDataLabels = iid_distrib(
             x_train, y_train, ds_info, decentralized=decentralized, display=display)
@@ -305,7 +359,4 @@ def feature_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, sigm
 
             clientsData[i] = clientData
 
-    if not decentralized:
-        return to_ClientData(clientsData, clientsDataLabels, ds_info)
-    else:
         return clientsData, clientsDataLabels

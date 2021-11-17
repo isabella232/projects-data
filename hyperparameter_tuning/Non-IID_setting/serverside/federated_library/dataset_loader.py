@@ -5,7 +5,7 @@ from federated_library.display_distribution import display_dataset_barplot
 
 
 def load_tf_dataset(dataset_name: str, decentralized, skew_type="", display=True):
-    """ Load $dataset_name dataset from tensorflow
+    """ Load `dataset_name` dataset from tensorflow
 
     :param dataset_name: dataset name from tensorflow
     :param decentralized: True if running decentralized experiment
