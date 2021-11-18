@@ -105,5 +105,12 @@ venv.bak/
 
 .DS_Store
 
+# IDEs
+.idea/
+.vscode/
+
+# Python venvs
 hyperparameter_tuning/Non-IID_setting/serverside/poseidon_fed/
+hyperparameter_tuning/Non-IID_setting/serverside/poseidon_dec/
+
 hyperparameter_tuning/Non-IID_setting/serverside/nohup.out

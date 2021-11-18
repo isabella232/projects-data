@@ -1,11 +1,12 @@
 from itertools import product
 from pprint import pprint
 from copy import deepcopy
+import time
+import numpy as np
 import fedjax
 from fedjax.algorithms import fed_avg
 import jax
 import jax.numpy as jnp
-import time
 
 from federated_library.models_haiku import get_model
 from federated_library.distributions import qty_skew_distrib, \
@@ -127,7 +128,7 @@ def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
     res = []
     for i, hp_config_params in enumerate(hp_grid):
         tic = time.time()
-        
+
         run_res_list = []
         # Take mean accuracy of runs
         for _ in range(hp_config_params["runs"]):
@@ -142,6 +143,37 @@ def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
         res.append((mean_run_res, hp_config_formatted))
 
         toc = time.time()
-        print(f"{i + 1}. configuration finished (Accuracy: {mean_run_res}, Time:{(toc - tic):2f}s)")
+        print(
+            f"{i + 1}. configuration finished (Accuracy: {mean_run_res}, Time:{(toc - tic):2f}s)")
+
+    return res
+
+
+def fed_avg_intervalsearch(params, ds, test_split, ds_info, display):
+
+    res = []
+
+    global interval
+
+    for interv in params['intervals']:
+        interval = interv
+
+        count = 0
+
+        combination_res = np.zeros(params['runs'], dtype=object)
+
+        params['interval'] = interv
+
+        print(f'Training with params : {params}')
+
+        for r in range(params['runs']):
+            combination_res[r] = train_fed_avg(
+                params, ds, test_split, ds_info, display=display)['accuracy']
+            print(count, combination_res[r])
+            count += 1
+
+        runs_avg = np.mean(combination_res)
+
+        res.append((runs_avg, deepcopy(params)))
 
     return res

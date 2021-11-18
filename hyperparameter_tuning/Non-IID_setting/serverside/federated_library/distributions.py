@@ -66,7 +66,7 @@ def convert_to_federated_data(
 
 def build_ClientData_from_dataidx_map(
         x_train: np.ndarray, y_train: np.ndarray,
-        ds_info, dataidx_map, decentralized, display):
+        ds_info, dataidx_map, decentralized, display, is_tf):
     """Build dataset for each client based on  dataidx_map
 
     :param x_train: training split samples
@@ -119,7 +119,10 @@ def build_ClientData_from_dataidx_map(
     if decentralized:
         return clientsData, clientsDataLabels
     # If federated setting
-    return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
+    if is_tf:
+        return to_ClientData(clientsData, clientsDataLabels, ds_info)
+    else:
+        return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
 
 
 def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info,
@@ -174,7 +177,9 @@ def iid_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info,
             return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
 
 
-def qty_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, decentralized, display=False):
+def qty_skew_distrib(
+    x_train: np.ndarray, y_train: np.ndarray, ds_info, beta,
+    decentralized, display=False, is_tf=False):
     """Build an quantity-skewed distributed dataset for each client, with Dirichlet distribution
         of parameter beta
 
@@ -200,10 +205,14 @@ def qty_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, de
     batch_idxs = np.split(idxs, proportions)
     net_dataidx_map = {i: batch_idxs[i] for i in range(num_clients)}
 
-    return build_ClientData_from_dataidx_map(x_train, y_train, ds_info, net_dataidx_map, decentralized=decentralized, display=display)
+    return build_ClientData_from_dataidx_map(
+        x_train, y_train, ds_info, net_dataidx_map,
+        decentralized=decentralized, display=display, is_tf=is_tf)
 
 
-def label_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, decentralized, display=False):
+def label_skew_distrib(
+    x_train: np.ndarray, y_train: np.ndarray, ds_info, beta,
+    decentralized, display=False, is_tf=False):
     """Build an label-skewed distributed dataset for each client, with Dirichlet distribution
         of parameter beta
 
@@ -263,13 +272,13 @@ def label_skew_distrib(x_train: np.ndarray, y_train: np.ndarray, ds_info, beta, 
 
     return build_ClientData_from_dataidx_map(
         x_train, y_train, ds_info, net_dataidx_map,
-        decentralized=decentralized, display=display
+        decentralized=decentralized, display=display, is_tf=is_tf
     )
 
 
 def feature_skew_distrib(
         x_train: np.ndarray, y_train: np.ndarray, ds_info, sigma,
-        decentralized, display=False):
+        decentralized, display=False, is_tf=False):
     """Build an feature-skewed distributed dataset for each client, adds a Gaussian noise of parameters N(0,
     (sigma * i/num_clients)**2) for each client i
 
@@ -330,7 +339,10 @@ def feature_skew_distrib(
             clientsData[i] = clientData
             clientsDataLabels[i] = clientDataLabels
 
-        return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
+        if is_tf:
+            return to_ClientData(clientsData, clientsDataLabels, ds_info)
+        else:
+            return convert_to_federated_data(clientsData, clientsDataLabels, ds_info)
     else:
         clientsData, clientsDataLabels = iid_distrib(
             x_train, y_train, ds_info, decentralized=decentralized, display=display)

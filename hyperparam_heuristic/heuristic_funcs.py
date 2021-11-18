@@ -1,10 +1,12 @@
 import numpy as np
 
 from utils import closest_power, filter_outliers
+from constants import HEUR_DICT
 
 
-def lr_heuristic(ratios, nr_parties, lrs, best_acc, val_accs, type_of_skew, v=0):
+def lr_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
     agg_lr = 0
+    lrs = hp_values
     if type_of_skew == "feature":
         if v == 0:
             for i in range(nr_parties):
@@ -51,8 +53,9 @@ def lr_heuristic(ratios, nr_parties, lrs, best_acc, val_accs, type_of_skew, v=0)
     return agg_lr
 
 
-def momentum_heuristic(ratios, nr_parties, momentums, best_acc, val_accs, type_of_skew, v=0):
+def momentum_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
     agg_mom = 0
+    momentums = hp_values
     if type_of_skew == "feature":
         # abs not in paper
         if v == 0:
@@ -98,8 +101,9 @@ def momentum_heuristic(ratios, nr_parties, momentums, best_acc, val_accs, type_o
     return agg_mom
 
 
-def batch_size_heuristic(ratios, nr_parties, batch_sizes, val_accs, type_of_skew, v=0):
+def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
     agg_bs = 0
+    batch_sizes = hp_values
     if type_of_skew == "feature":
         if v == 0:
             for i in range(nr_parties):
@@ -128,7 +132,6 @@ def batch_size_heuristic(ratios, nr_parties, batch_sizes, val_accs, type_of_skew
             fil_bs = filter_outliers(batch_sizes)
             agg_bs += np.mean(fil_bs)
 
-
     elif type_of_skew == "qty":
         if v == 0:
             for i in range(nr_parties):
@@ -146,19 +149,27 @@ def batch_size_heuristic(ratios, nr_parties, batch_sizes, val_accs, type_of_skew
     return closest_power(agg_bs)
 
 
-def aggregate_results(hps, accs, best_acc, ratios, type_of_skew, v=0):
+def aggregate_results(hps, accs, best_acc, ratios, type_of_skew, hp_name=None, v=0):
     nr_parties = len(ratios)
 
-    agg_params = dict()
+    heuristic_fns = dict(zip(HEUR_DICT.keys(), [lr_heuristic, momentum_heuristic, batch_size_heuristic]))
 
-    agg_params['server_lr'] = lr_heuristic(ratios=ratios, nr_parties=nr_parties, lrs=hps["lr"],
-                                           best_acc=best_acc, val_accs=accs,
-                                           type_of_skew=type_of_skew, v=v)
-    agg_params['server_momentum'] = momentum_heuristic(ratios=ratios, nr_parties=nr_parties,
-                                                       momentums=hps["momentum"], best_acc=best_acc,
-                                                       val_accs=accs, type_of_skew=type_of_skew, v=v)
-    agg_params['batch_size'] = batch_size_heuristic(ratios=ratios, nr_parties=nr_parties,
-                                                    batch_sizes=hps["batch_size"], val_accs=accs,
-                                                    type_of_skew=type_of_skew, v=v)
+    agg_params = dict()
+    if hp_name:
+        hp_in = HEUR_DICT[hp_name]["in"]
+        hp_out = HEUR_DICT[hp_name]["out"]
+        agg_params[hp_out] = heuristic_fns[hp_name](ratios=ratios, nr_parties=nr_parties,
+                                                        hp_values=hps[hp_in],
+                                                        best_acc=best_acc,
+                                                        val_accs=accs,
+                                                        type_of_skew=type_of_skew, v=v)
+
+    else:
+        for hp, heur_fn in heuristic_fns.items():
+            hp_in = HEUR_DICT[hp]["in"]
+            hp_out = HEUR_DICT[hp]["out"]
+            agg_params[HEUR_DICT[hp]["out"]] = heur_fn(ratios=ratios, nr_parties=nr_parties, hp_values=hps[hp_in],
+                                                       best_acc=best_acc, val_accs=accs,
+                                                       type_of_skew=type_of_skew, v=v)
 
     return agg_params

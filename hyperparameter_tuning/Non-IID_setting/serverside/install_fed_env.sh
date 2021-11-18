@@ -1,5 +1,10 @@
 #! /bin/bash
 
+if [ "$1" != "cpu" ] || [ "$1" != "gpu" ]; then
+    echo "cpu or gpu not specified"
+    exit 1
+fi
+
 # Check for python
 if ! hash python3; then
     echo "python3 is not installed"
@@ -40,14 +45,14 @@ pip install --upgrade jupyterlab
 pip install --upgrade ipywidgets
 pip install --upgrade numpy pandas matplotlib
 pip install --upgrade tensorflow_datasets
-pip install --upgrade tensorflow_federated
-pip install --upgrade "jax[cuda11_cudnn805]" -f https://storage.googleapis.com/jax-releases/jax_releases.html
+
+if [ "$1" == "gpu" ]; then
+    pip install --upgrade jax
+elif [ "$1" == "cpu" ]; then
+    pip install --upgrade "jax[cuda11_cudnn805]" -f https://storage.googleapis.com/jax-releases/jax_releases.html
+fi
 pip install fedjax
-
-
-# Replace files
-# ./fedjax_replace.sh
-
+echo -ne "\n"
 
 # Launch jupyter
 ./run.sh
