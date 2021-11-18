@@ -110,7 +110,7 @@ venv.bak/
 .vscode/
 
 # Python venvs
-hyperparameter_tuning/Non-IID_setting/serverside/poseidon_fed/
-hyperparameter_tuning/Non-IID_setting/serverside/poseidon_dec/
+hyperparameter_tuning/non_IID_setting/serverside/poseidon_fed/
+hyperparameter_tuning/non_IID_setting/serverside/poseidon_dec/
 
-hyperparameter_tuning/Non-IID_setting/serverside/nohup.out
+hyperparameter_tuning/non_IID_setting/serverside/nohup.out
