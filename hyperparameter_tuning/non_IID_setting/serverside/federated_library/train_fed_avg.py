@@ -2,6 +2,7 @@ from itertools import product
 from pprint import pprint
 from copy import deepcopy
 import time
+from datetime import datetime
 import numpy as np
 import fedjax
 from fedjax.algorithms import fed_avg
@@ -123,7 +124,9 @@ def grid_parameters(parameters):
 
 def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
     hp_grid = grid_parameters(params)
-    print(f'Gridsearch on {len(hp_grid)} configurations.')
+    print(
+        f"Gridsearch on {len(hp_grid)} configurations. "
+        f"({datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
 
     res = []
     for i, hp_config_params in enumerate(hp_grid):
@@ -144,7 +147,8 @@ def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
 
         toc = time.time()
         print(
-            f"{i + 1}. configuration finished (Accuracy: {mean_run_res}, Time:{(toc - tic):2f}s)")
+            f"{i + 1}. configuration finished (Accuracy: {mean_run_res}, "
+            f"Time: {(toc - tic):2f} s)")
 
     return res
 
