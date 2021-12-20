@@ -112,5 +112,4 @@ venv.bak/
 # Python venvs
 hyperparameter_tuning/non_IID_setting/serverside/poseidon_fed/
 hyperparameter_tuning/non_IID_setting/serverside/poseidon_dec/
-
 hyperparameter_tuning/non_IID_setting/serverside/nohup.out

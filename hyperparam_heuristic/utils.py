@@ -3,6 +3,8 @@ from collections import Counter
 
 import numpy as np
 
+from constants import HEUR_DICT, INPUT_HEUR, OUTPUT_HEUR
+
 
 def sum_dicts(d1, d2):
     return {k: d1.get(k, []) + d2.get(k, []) for k in set(d1) | set(d2)}
@@ -18,12 +20,15 @@ def closest_power(x):
     return 2 ** min(possible_results, key=lambda z: abs(x - 2 ** z))
 
 
-def baseline_results(hps, fn):
+def baseline_results(hps, fn, hyper_param=None):
     baseline_params = dict()
-    baseline_params['server_lr'] = fn(hps["lr"])
-    baseline_params['server_momentum'] = fn(hps["momentum"])
-    baseline_params['batch_size'] = closest_power(fn(hps["batch_size"]))
-
+    if hyper_param:
+        hp_in = HEUR_DICT[hyper_param]["in"]
+        hp_out = HEUR_DICT[hyper_param]["out"]
+        baseline_params[hp_out] = fn(hps[hp_in])
+    else:
+        for hp_in, hp_out in zip(INPUT_HEUR, OUTPUT_HEUR):
+            baseline_params[hp_out] = fn(hps[hp_in])
     return baseline_params
 
 

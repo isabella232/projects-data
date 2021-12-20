@@ -1,11 +1,15 @@
+from collections import defaultdict
+
 import numpy as np
 import pandas as pd
 
-PATH = "../hyperparameter_tuning/Non-IID_setting/results_aggregation/non-IID_res"
+from constants import INPUT_HEUR
+
+RESULTS_PATH = "../hyperparameter_tuning/non_IID_setting/results_aggregation/non-IID_res"
 
 
-def get_client_res(dataset, skew, nr_parties, type_of_skew):
-    experiment_directory = f"{PATH}/{type_of_skew}_skew/{dataset}_non-IID_{type_of_skew}_skew/{nr_parties}_parties"
+def get_client_res(dataset, skew, nr_parties, type_of_skew, hp_name=None):
+    experiment_directory = f"{RESULTS_PATH}/{type_of_skew}_skew/{dataset}_non-IID_{type_of_skew}_skew/{nr_parties}_parties"
 
     if type_of_skew == "qty":
         distributions = []
@@ -19,10 +23,10 @@ def get_client_res(dataset, skew, nr_parties, type_of_skew):
     else:
         distributions = None
         ratios = []
-    lrs = []
-    momentums = []
-    batch_sizes = []
+
     accuracies = []
+
+    best_hp = defaultdict(list)
 
     # Get individual data
     for i in range(nr_parties):
@@ -30,22 +34,26 @@ def get_client_res(dataset, skew, nr_parties, type_of_skew):
         try:
             client_result = pd.read_csv(file_path)
             if type_of_skew == "qty":
-                ratio = float(distributions[i].split(',')[2].replace(' percentage :', ''))
+                ratio = float(distributions[i].split(
+                    ',')[2].replace(' percentage :', ''))
                 ratios.append(ratio)
             else:
                 ratios.append(1)
+            if hp_name:
+                best_hp[hp_name].append(client_result.head(
+                    1).get([hp_name]).values[0][0])
+            else:
+                for hp in INPUT_HEUR:
+                    best_hp[hp].append(
+                        np.array(client_result.head(1).get([hp]).values[0][0]))
 
-            client_lr = client_result.head(1).get(['client_lr']).values[0][0]
-            client_momentum = client_result.head(1).get(['client_momentum']).values[0][0]
-            client_batch_size = client_result.head(1).get(['batch_size']).values[0][0]
-            client_accuracy = client_result.head(1).get(['val_accuracy']).values[0][0]
+            accuracies.append(client_result.head(
+                1).get(['val_accuracy']).values[0][0])
 
-            lrs.append(client_lr)
-            momentums.append(client_momentum)
-            batch_sizes.append(client_batch_size)
-            accuracies.append(client_accuracy)
-        except FileNotFoundError:
-            print(f"File for client {i} in {dataset} {(skew, nr_parties, type_of_skew)} does not exist.")
+        except FileNotFoundError as e:
+            print(
+                f"File for client {i} in {dataset} {(skew, nr_parties, type_of_skew)} does not exist.")
+            # raise e
             # print(file_path)
 
     best_acc = np.max(accuracies)
@@ -55,16 +63,18 @@ def get_client_res(dataset, skew, nr_parties, type_of_skew):
     else:
         arr_ratios = np.array(ratios)
 
-    return {"lr": np.array(lrs),
-            "momentum": np.array(momentums),
-            "batch_size": np.array(batch_sizes)}, accuracies, best_acc, arr_ratios
+    return best_hp, accuracies, best_acc, arr_ratios
 
 
 def get_fedavg_res(dataset, skew, nr_parties, type_of_skew):
-    experiment_directory = f"{PATH}/{type_of_skew}_skew/{dataset}_non-IID_{type_of_skew}_skew/{nr_parties}_parties"
+    # TODO: move to right folder
+    # experiment_directory = f"{RESULTS_PATH}/{type_of_skew}_skew/{dataset}_non-IID_{type_of_skew}_skew/{nr_parties}_parties"
+    # # Get FEDAVG data
+    # with open(f"{experiment_directory}/fedavg/{dataset.lower()}_{type_of_skew}_skew_{skew}_{nr_parties}clients.txt",
+    #           "r") as reader:
+    experiment_directory = "fedavg_results"
     # Get FEDAVG data
-    with open(f"{experiment_directory}/fedavg/{dataset.lower()}_{type_of_skew}_skew_{skew}_{nr_parties}clients.txt",
-              "r") as reader:
+    with open(f"{experiment_directory}/{dataset.lower()}_{type_of_skew}_skew_{skew}_{nr_parties}clients.txt", "r") as reader:
         line = reader.readline()
 
         while not line.startswith("\'client_lr\':"):
