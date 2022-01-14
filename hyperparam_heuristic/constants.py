@@ -1,14 +1,20 @@
-TYPE_OF_SKEW = ["feature", "label", "qty"]
-DATASETS = ["MNIST", "SVHN_CROPPED", "CIFAR10", "EMNIST"]
+SKEW_TYPES = ["feature", "label", "qty"]
+DATASETS = ["mnist", "svhn_cropped", "cifar10", "emnist"]
 
-FEATURE_SKEWS = ["0.02", "0.1"]
-LABEL_SKEWS = ["0.1", "1.0", "5.0"]
-QTY_SKEWS = ["0.1", "0.4", "1.0", "2.0"]
+# FEATURE_SKEWS = [0.02, 0.1]
+# LABEL_SKEWS = [0.1, 1.0, 5.0]
+# QTY_SKEWS = [0.1, 0.4, 1.0, 2.0]
 
 SKEWS = {
-    "feature": [float(s) for s in FEATURE_SKEWS],
-    "label": [float(s) for s in LABEL_SKEWS],
-    "qty": [float(s) for s in QTY_SKEWS]
+    "feature": [0.02, 0.1],
+    "label": [0.1, 1.0, 5.0],
+    "qty": [0.1, 0.4, 1.0, 2.0]
+}
+
+HP_GRID = {
+    "lr": [0.01, 0.03, 0.05, 0.1, 0.3, 0.5],
+    "mom": [0.0, 0.3, 0.6, 0.9],
+    "bs": [8, 16, 32]
 }
 
 NR_PARTIES = [10, 20]
