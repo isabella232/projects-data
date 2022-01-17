@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from utils import baseline_results, mode
+from utils import baseline_results, mode, compute_accuracy
 from read_data import get_client_res, get_fedavg_res
 from heuristic_funcs import aggregate_results
 from constants import HEUR_DICT, HP_GRID
@@ -42,14 +42,11 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
             # Baselines
             mean_params = baseline_results(hps, np.mean, hp_name)
             median_params = baseline_results(hps, np.median, hp_name)
-            if hp_name == "bs":
-                mode_params = baseline_results(hps, mode, hp_name)
+            mode_params = baseline_results(hps, mode, hp_name)
 
             mean_res = mean_params[hp_out]
             median_res = median_params[hp_out]
-
-            if hp_name == "bs":
-                mode_res = mode_params[hp_out]
+            mode_res = mode_params[hp_out]
 
             # Get FEDAVG results (ground truth)
             fedavg_params = get_fedavg_res(dataset, s, p, type_of_skew)
@@ -65,19 +62,18 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
             # Calculate errors
             agg_errors["mean"].append(mean_res - fedavg_res)
             agg_errors["median"].append(median_res - fedavg_res)
-            if hp_name == "bs":
-                agg_errors["mode"].append(mode_res - fedavg_res)
+            agg_errors["mode"].append(mode_res - fedavg_res)
 
             # Boxplots
             if plot:
-                sns.boxplot(y=hps[hp_in], showmeans=True, ax=ax[i, j])
+                sns.boxplot(y=hps[hp_in], showmeans=False, ax=ax[i, j])
                 sns.swarmplot(y=hps[hp_in], color=".25", ax=ax[i, j])
 
                 for v in versions:
                     ax[i, j].scatter(x=0, y=heuristic_res[v], s=100,
                                      label=f"heuristic v{v}")
                 ax[i, j].scatter(x=0, y=fedavg_res, s=100, marker="x",
-                                 label="fedavg")
+                                 color="yellow", label="fedavg")
 
                 if hp_name == "bs":
                     ax[i, j].set_yscale("log", base=2)
@@ -91,9 +87,8 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
     return agg_errors, (X, y, y_hat)
 
 
-def print_results(agg_es, X, y, y_hat, hp_name):
+def print_results(agg_es, X, y, y_hat, hp_name, detailed=False):
     print("HEURISTIC RESULTS")
-    from utils import compute_accuracy
 
     accs = compute_accuracy(y, y_hat, HP_GRID[hp_name])
 
@@ -114,11 +109,17 @@ def print_results(agg_es, X, y, y_hat, hp_name):
         f"Median MAE: {mae(agg_es['median']):.3f}"
         f" ± {std(agg_es['median']):.3f}"
         f" (Bias: {np.mean(agg_es['median']):+.3f})")
-    print()
-    for i in range(len(X)):
-        print("X", X[i])
-        print("y", y[i])
-        print("y_hat", y_hat[i])
+    print(
+        f"Mode MAE: {mae(agg_es['mode']):.3f}"
+        f" ± {std(agg_es['mode']):.3f}"
+        f" (Bias: {np.mean(agg_es['mode']):+.3f})")
+
+    if detailed:
+        print()
+        for i in range(len(X)):
+            print("X", X[i])
+            print("y", y[i])
+            print("y_hat", y_hat[i])
 
     print(
         f"(mean: {np.mean(y):.3f}, variance: {np.var(y):.3f})")

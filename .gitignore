@@ -113,3 +113,4 @@ venv.bak/
 hyperparameter_tuning/non_IID_setting/serverside/poseidon_fed/
 hyperparameter_tuning/non_IID_setting/serverside/poseidon_dec/
 hyperparameter_tuning/non_IID_setting/serverside/nohup.out
+hyperparam_heuristic/federated_library/

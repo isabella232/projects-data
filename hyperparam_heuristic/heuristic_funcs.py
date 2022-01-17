@@ -8,73 +8,30 @@ from constants import HEUR_DICT
 def lr_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
     agg_lr = 0
     lrs = hp_values
-    if type_of_skew == "feature":
-        if v == 0:
+    if v == 0:
+        # constant
+        agg_lr = 0.5
+    elif v == 1:
+        for i in range(nr_parties):
+            agg_lr += ratios[i] / np.sum(ratios) * lrs[i] * (1 - lrs[i])
+
+        # add bias
+        agg_lr += .3
+
+    elif v == 2:
+        filtered_lrs = filter_outliers(lrs, scale=1.5)
+        if type_of_skew == "qty":
             for i in range(nr_parties):
-                agg_lr += lrs[i] * (1 - lrs[i]) / nr_parties
+                agg_lr = 0.8 * np.max(filtered_lrs)
+        else:
+            agg_lr = np.max(filtered_lrs)
 
-            # add bias
-            agg_lr += .323
-
-        elif v == 1:
-            # constant
-            agg_lr = 0.5
-
-        elif v == 2:
-            filtered_lrs = filter_outliers(lrs, scale=1)
-            agg_lr = max(filtered_lrs, key=filtered_lrs.count)
-
-        elif v == 3:
-            filtered_lrs = filter_outliers(lrs, scale=1)
-            agg_lr = np.median(filtered_lrs)
-        elif v == 4:
+    elif v == 3:
+        if type_of_skew == "qty":
+            agg_lr = np.mean(lrs)
+        else:
             for i in range(nr_parties):
-                agg_lr += 1.2 * val_accs[i] / np.sum(val_accs) * lrs[i]
-
-    if type_of_skew == "label":
-        if v == 0:
-            for i in range(nr_parties):
-                agg_lr += lrs[i] * (1 - lrs[i]) / nr_parties
-
-            # add bias
-            agg_lr += .327
-
-        elif v == 1:
-            # constant
-            agg_lr = 0.5
-
-        elif v == 2:
-            filtered_lrs = filter_outliers(lrs, scale=1)
-            agg_lr = max(filtered_lrs, key=filtered_lrs.count)
-
-        elif v == 3:
-            filtered_lrs = filter_outliers(lrs, scale=1)
-            agg_lr = np.median(filtered_lrs)
-        elif v == 4:
-            for i in range(nr_parties):
-                agg_lr += 1.2 * val_accs[i] / np.sum(val_accs) * lrs[i]
-
-    if type_of_skew == "qty":
-        if v == 0:
-            for i in range(nr_parties):
-                agg_lr += ratios[i] * lrs[i]
-
-            agg_lr += 0
-
-        elif v == 1:
-            agg_lr = 0.5
-
-        elif v == 2:
-            filtered_lrs = filter_outliers(lrs)
-            agg_lr = max(filtered_lrs, key=filtered_lrs.count)
-
-        elif v == 3:
-            filtered_lrs = filter_outliers(lrs, scale=1)
-            agg_lr = np.median(filtered_lrs)
-
-        elif v == 4:
-            for i in range(nr_parties):
-                agg_lr += 1.2 * val_accs[i] / np.sum(val_accs) * lrs[i]
+                agg_lr += 1.5 * val_accs[i] / np.sum(val_accs) * lrs[i]
 
     return agg_lr
 
@@ -84,69 +41,55 @@ def momentum_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_o
     moms = hp_values
     if type_of_skew == "feature":
         if v == 0:
+            # constant (mean server hp)
+            agg_mom = 0.712
+        if v == 1:
             for i in range(nr_parties):
                 agg_mom += moms[i] * (1 - moms[i]) / nr_parties
 
             # add bias
             agg_mom += 0.627
 
-        elif v == 1:
-            # constant
-            agg_mom = 0.712
-
         elif v == 2:
-            agg_mom = np.percentile(moms, q=10)
+            agg_mom = np.percentile(moms, q=20)
 
         elif v == 3:
-            filtered_moms = filter_outliers(moms, scale=1)
-            agg_mom = np.mean(filtered_moms)
-        elif v == 4:
             for i in range(nr_parties):
                 agg_mom += 0.8 * val_accs[i] / np.sum(val_accs) * moms[i]
 
     if type_of_skew == "label":
         if v == 0:
+            # constant (mean server hp)
+            agg_mom = .763
+        if v == 1:
             for i in range(nr_parties):
                 agg_mom += moms[i] * (1 - moms[i]) / nr_parties
 
             # add bias
             agg_mom += .676
 
-        elif v == 1:
-            # constant
-            agg_mom = .763
-
         elif v == 2:
             agg_mom = np.percentile(moms, q=40)
 
         elif v == 3:
-            filtered_moms = filter_outliers(moms, scale=1)
-            agg_mom = np.mean(filtered_moms)
-
-        elif v == 4:
             for i in range(nr_parties):
                 agg_mom += val_accs[i] / np.sum(val_accs) * moms[i]
 
     if type_of_skew == "qty":
         if v == 0:
+            # constant (mean server hp)
+            agg_mom = .412
+        if v == 1:
             for i in range(nr_parties):
                 agg_mom += ratios[i] * moms[i]
 
             agg_mom -= .37
 
-        elif v == 1:
-            agg_mom = .412
-
         elif v == 2:
             for i in range(nr_parties):
-                agg_mom = 1 / (moms[i] + 1)
-            agg_mom *= nr_parties / 20
+                agg_mom = nr_parties / (20 * (np.median(moms) + 1))
 
         elif v == 3:
-            filtered_moms = filter_outliers(moms, scale=1)
-            agg_mom = 0.8 * np.min(filtered_moms)
-
-        elif v == 4:
             for i in range(nr_parties):
                 agg_mom += 0.5 * val_accs[i] / np.sum(val_accs) * moms[i]
 
@@ -158,23 +101,24 @@ def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type
     batch_sizes = hp_values
     if type_of_skew == "feature":
         if v == 0:
+            # constant (median fedavg batch size)
+            agg_bs = 8
+        if v == 1:
             for i in range(nr_parties):
                 agg_bs += batch_sizes[i] * val_accs[i] / (2 * np.sum(val_accs))
 
-        elif v == 1:
-            agg_bs = 8
-
-        elif v == 2:
+        elif v in [2, 3]:
             fil_bs = filter_outliers(batch_sizes)
             agg_bs = np.min(fil_bs) / 2
 
     elif type_of_skew == "label":
         if v == 0:
+            # constant (median fedavg batch size)
+            agg_bs = 8
+
+        if v == 1:
             for i in range(nr_parties):
                 agg_bs += batch_sizes[i] * val_accs[i] / (2 * np.sum(val_accs))
-
-        elif v == 1:
-            agg_bs = 8
 
         if v == 2:
             fil_bs = filter_outliers(batch_sizes)
@@ -182,11 +126,12 @@ def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type
 
     elif type_of_skew == "qty":
         if v == 0:
+            # constant (median fedavg batch size)
+            agg_bs = 8
+
+        if v == 1:
             for i in range(nr_parties):
                 agg_bs += batch_sizes[i] * val_accs[i] / (2 * np.sum(val_accs))
-
-        elif v == 1:
-            agg_bs = 8
 
         if v == 2:
             fil_bs = filter_outliers(batch_sizes)
