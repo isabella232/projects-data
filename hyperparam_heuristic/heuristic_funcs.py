@@ -120,7 +120,7 @@ def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type
             for i in range(nr_parties):
                 agg_bs += batch_sizes[i] * val_accs[i] / (2 * np.sum(val_accs))
 
-        if v == 2:
+        if v in [2, 3]:
             fil_bs = filter_outliers(batch_sizes)
             agg_bs = np.min(fil_bs) / 2
 
@@ -133,7 +133,7 @@ def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type
             for i in range(nr_parties):
                 agg_bs += batch_sizes[i] * val_accs[i] / (2 * np.sum(val_accs))
 
-        if v == 2:
+        if v in [2, 3]:
             fil_bs = filter_outliers(batch_sizes)
             agg_bs = np.min(fil_bs) / 2
 

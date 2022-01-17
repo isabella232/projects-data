@@ -140,7 +140,7 @@ def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
                 display=display)['accuracy']
             run_res_list.append(run_res)
 
-        mean_run_res = jnp.mean(jnp.array(run_res_list))
+        mean_run_res = float(jnp.mean(jnp.array(run_res_list)))
         hp_config_formatted = deepcopy(hp_config_params)
         hp_config_formatted["act_fn"] = hp_config_formatted["act_fn"].__name__
         res.append((mean_run_res, hp_config_formatted))
