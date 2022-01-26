@@ -1,0 +1,241 @@
+DATASET: svhn_cropped, SKEW_TYPE: feature
+10 clients, skew=0.02
+Gridsearch on 1 configurations. (18/01/2022 08:31:33)
+1. configuration finished (Accuracy: 0.8766902089118958, Time: 498.292618 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.5, 'server_momentum': 0.712, 'batch_size': 8, 'heur_acc': 0.8766902089118958, 'fedavg_acc': 0.87926394, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 08:39:51)
+1. configuration finished (Accuracy: 0.8763445019721985, Time: 497.024890 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.42259, 'server_momentum': 0.721, 'batch_size': 8, 'heur_acc': 0.8763445019721985, 'fedavg_acc': 0.87926394, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 08:48:08)
+1. configuration finished (Accuracy: 0.874346911907196, Time: 492.282681 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.3, 'server_momentum': 0.6, 'batch_size': 8, 'heur_acc': 0.874346911907196, 'fedavg_acc': 0.87926394, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 08:56:21)
+1. configuration finished (Accuracy: 0.8706591725349426, Time: 495.885154 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.2561128794441032, 'server_momentum': 0.6169049950680816, 'batch_size': 8, 'heur_acc': 0.8706591725349426, 'fedavg_acc': 0.87926394, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+10 clients, skew=0.1
+Gridsearch on 1 configurations. (18/01/2022 09:04:36)
+1. configuration finished (Accuracy: 0.873578667640686, Time: 490.496175 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.712, 'batch_size': 8, 'heur_acc': 0.873578667640686, 'fedavg_acc': 0.87496156, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 09:12:47)
+1. configuration finished (Accuracy: 0.8733097314834595, Time: 504.819661 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.40528, 'server_momentum': 0.7324999999999999, 'batch_size': 8, 'heur_acc': 0.8733097314834595, 'fedavg_acc': 0.87496156, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 09:21:12)
+1. configuration finished (Accuracy: 0.8396204710006714, Time: 494.313193 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.09, 'server_momentum': 0.78, 'batch_size': 8, 'heur_acc': 0.8396204710006714, 'fedavg_acc': 0.87496156, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 09:29:26)
+1. configuration finished (Accuracy: 0.8656269311904907, Time: 494.845692 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.24256006920395726, 'server_momentum': 0.6299925689191282, 'batch_size': 8, 'heur_acc': 0.8656269311904907, 'fedavg_acc': 0.87496156, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'feature'}
+20 clients, skew=0.02
+Gridsearch on 1 configurations. (18/01/2022 09:37:41)
+1. configuration finished (Accuracy: 0.8714274764060974, Time: 497.275261 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.5, 'server_momentum': 0.712, 'batch_size': 8, 'heur_acc': 0.8714274764060974, 'fedavg_acc': 0.86889213, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 09:45:58)
+1. configuration finished (Accuracy: 0.8636293411254883, Time: 493.182558 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.40715, 'server_momentum': 0.712, 'batch_size': 8, 'heur_acc': 0.8636293411254883, 'fedavg_acc': 0.86889213, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 09:54:11)
+1. configuration finished (Accuracy: 0.7504993677139282, Time: 489.121599 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.1, 'server_momentum': 0.9000000000000001, 'batch_size': 8, 'heur_acc': 0.7504993677139282, 'fedavg_acc': 0.86889213, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 10:02:21)
+1. configuration finished (Accuracy: 0.8358174562454224, Time: 490.187554 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.02, 'server_lr': 0.22000521508433216, 'server_momentum': 0.6873116035955927, 'batch_size': 8, 'heur_acc': 0.8358174562454224, 'fedavg_acc': 0.86889213, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+20 clients, skew=0.1
+Gridsearch on 1 configurations. (18/01/2022 10:10:31)
+1. configuration finished (Accuracy: 0.8660494685173035, Time: 496.492577 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.712, 'batch_size': 8, 'heur_acc': 0.8660494685173035, 'fedavg_acc': 0.86385983, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 10:18:47)
+1. configuration finished (Accuracy: 0.8602873086929321, Time: 494.911313 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.436465, 'server_momentum': 0.7325, 'batch_size': 8, 'heur_acc': 0.8602873086929321, 'fedavg_acc': 0.86385983, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 10:27:02)
+1. configuration finished (Accuracy: 0.8650506734848022, Time: 501.494618 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.6, 'batch_size': 8, 'heur_acc': 0.8650506734848022, 'fedavg_acc': 0.86385983, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+Gridsearch on 1 configurations. (18/01/2022 10:35:24)
+1. configuration finished (Accuracy: 0.8495697379112244, Time: 487.585479 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.31325777901168644, 'server_momentum': 0.6325429184995529, 'batch_size': 8, 'heur_acc': 0.8495697379112244, 'fedavg_acc': 0.86385983, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'feature'}
+DATASET: svhn_cropped, SKEW_TYPE: label
+10 clients, skew=0.1
+Gridsearch on 1 configurations. (18/01/2022 10:43:35)
+1. configuration finished (Accuracy: 0.8128073215484619, Time: 459.466092 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.763, 'batch_size': 8, 'heur_acc': 0.8128073215484619, 'fedavg_acc': 0.8068915, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 10:51:14)
+1. configuration finished (Accuracy: 0.80854332447052, Time: 463.733940 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.4282, 'server_momentum': 0.7815000000000001, 'batch_size': 8, 'heur_acc': 0.80854332447052, 'fedavg_acc': 0.8068915, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 10:58:58)
+1. configuration finished (Accuracy: 0.8035878539085388, Time: 461.902747 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.6, 'batch_size': 8, 'heur_acc': 0.8035878539085388, 'fedavg_acc': 0.8068915, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 11:06:40)
+1. configuration finished (Accuracy: 0.7886447310447693, Time: 464.751964 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.27496793218036036, 'server_momentum': 0.6033364828143225, 'batch_size': 8, 'heur_acc': 0.7886447310447693, 'fedavg_acc': 0.8068915, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+10 clients, skew=1.0
+Gridsearch on 1 configurations. (18/01/2022 11:14:24)
+1. configuration finished (Accuracy: 0.8600184321403503, Time: 456.835094 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5, 'server_momentum': 0.763, 'batch_size': 8, 'heur_acc': 0.8600184321403503, 'fedavg_acc': 0.86393666, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 11:22:01)
+1. configuration finished (Accuracy: 0.8604794144630432, Time: 460.334321 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.3869, 'server_momentum': 0.7512500000000001, 'batch_size': 8, 'heur_acc': 0.8604794144630432, 'fedavg_acc': 0.86393666, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 11:29:42)
+1. configuration finished (Accuracy: 0.7743161916732788, Time: 459.845940 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.1, 'server_momentum': 0.95, 'batch_size': 8, 'heur_acc': 0.7743161916732788, 'fedavg_acc': 0.86393666, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 11:37:21)
+1. configuration finished (Accuracy: 0.8315150141716003, Time: 461.626773 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.1537564842485589, 'server_momentum': 0.9050186601531791, 'batch_size': 8, 'heur_acc': 0.8315150141716003, 'fedavg_acc': 0.86393666, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+10 clients, skew=5.0
+Gridsearch on 1 configurations. (18/01/2022 11:45:03)
+1. configuration finished (Accuracy: 0.8799938559532166, Time: 458.767719 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.5, 'server_momentum': 0.763, 'batch_size': 8, 'heur_acc': 0.8799938559532166, 'fedavg_acc': 0.87922555, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 11:52:42)
+1. configuration finished (Accuracy: 0.8655501008033752, Time: 251.474572 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.45858999999999994, 'server_momentum': 0.7815000000000001, 'batch_size': 16, 'heur_acc': 0.8655501008033752, 'fedavg_acc': 0.87922555, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 11:56:53)
+1. configuration finished (Accuracy: 0.8833358883857727, Time: 456.965349 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.5, 'server_momentum': 0.6, 'batch_size': 8, 'heur_acc': 0.8833358883857727, 'fedavg_acc': 0.87922555, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 12:04:30)
+1. configuration finished (Accuracy: 0.8806468844413757, Time: 448.311192 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.4077969131187814, 'server_momentum': 0.6107656949798834, 'batch_size': 8, 'heur_acc': 0.8806468844413757, 'fedavg_acc': 0.87922555, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'label'}
+20 clients, skew=0.1
+Gridsearch on 1 configurations. (18/01/2022 12:11:59)
+1. configuration finished (Accuracy: 0.832590639591217, Time: 452.529823 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.763, 'batch_size': 8, 'heur_acc': 0.832590639591217, 'fedavg_acc': 0.8275584, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 12:19:31)
+1. configuration finished (Accuracy: 0.8252535462379456, Time: 446.352869 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.389385, 'server_momentum': 0.7448750000000001, 'batch_size': 8, 'heur_acc': 0.8252535462379456, 'fedavg_acc': 0.8275584, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 12:26:58)
+1. configuration finished (Accuracy: 0.4993085265159607, Time: 448.304574 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.1, 'server_momentum': 0.48000000000000015, 'batch_size': 8, 'heur_acc': 0.4993085265159607, 'fedavg_acc': 0.8275584, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 12:34:26)
+1. configuration finished (Accuracy: 0.7427396774291992, Time: 451.621143 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.19764499509699138, 'server_momentum': 0.5431710676746496, 'batch_size': 8, 'heur_acc': 0.7427396774291992, 'fedavg_acc': 0.8275584, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+20 clients, skew=1.0
+Gridsearch on 1 configurations. (18/01/2022 12:41:58)
+1. configuration finished (Accuracy: 0.8674708008766174, Time: 445.698500 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5, 'server_momentum': 0.763, 'batch_size': 8, 'heur_acc': 0.8674708008766174, 'fedavg_acc': 0.86451286, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 12:49:23)
+1. configuration finished (Accuracy: 0.8636677861213684, Time: 448.588991 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.46208499999999997, 'server_momentum': 0.7766250000000001, 'batch_size': 8, 'heur_acc': 0.8636677861213684, 'fedavg_acc': 0.86451286, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 12:56:52)
+1. configuration finished (Accuracy: 0.8541410565376282, Time: 443.319235 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5, 'server_momentum': 0.9, 'batch_size': 8, 'heur_acc': 0.8541410565376282, 'fedavg_acc': 0.86451286, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 13:04:15)
+1. configuration finished (Accuracy: 0.8590580821037292, Time: 446.685353 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.39584870396740846, 'server_momentum': 0.8185674609860302, 'batch_size': 8, 'heur_acc': 0.8590580821037292, 'fedavg_acc': 0.86451286, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+20 clients, skew=5.0
+Gridsearch on 1 configurations. (18/01/2022 13:11:42)
+1. configuration finished (Accuracy: 0.8668177723884583, Time: 452.562532 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.5, 'server_momentum': 0.763, 'batch_size': 8, 'heur_acc': 0.8668177723884583, 'fedavg_acc': 0.8662415, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 13:19:15)
+1. configuration finished (Accuracy: 0.8646665215492249, Time: 453.320795 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.419695, 'server_momentum': 0.75675, 'batch_size': 8, 'heur_acc': 0.8646665215492249, 'fedavg_acc': 0.8662415, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 13:26:48)
+1. configuration finished (Accuracy: 0.7223801612854004, Time: 451.091681 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.1, 'server_momentum': 0.9, 'batch_size': 8, 'heur_acc': 0.7223801612854004, 'fedavg_acc': 0.8662415, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+Gridsearch on 1 configurations. (18/01/2022 13:34:19)
+1. configuration finished (Accuracy: 0.8422326445579529, Time: 461.398309 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 5.0, 'server_lr': 0.27751940595942387, 'server_momentum': 0.866314314209541, 'batch_size': 8, 'heur_acc': 0.8422326445579529, 'fedavg_acc': 0.8662415, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'label'}
+DATASET: svhn_cropped, SKEW_TYPE: qty
+10 clients, skew=0.1
+Gridsearch on 1 configurations. (18/01/2022 13:42:04)
+1. configuration finished (Accuracy: 0.8849877119064331, Time: 461.928969 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8849877119064331, 'fedavg_acc': 0.88544863, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 13:49:46)
+1. configuration finished (Accuracy: 0.8668946027755737, Time: 249.761790 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5250094489263825, 'server_momentum': 0.07493632007862727, 'batch_size': 16, 'heur_acc': 0.8668946027755737, 'fedavg_acc': 0.88544863, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 13:53:55)
+1. configuration finished (Accuracy: 0.8841809630393982, Time: 453.130561 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.4, 'server_momentum': 0.2631578947368421, 'batch_size': 8, 'heur_acc': 0.8841809630393982, 'fedavg_acc': 0.88544863, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:01:28)
+1. configuration finished (Accuracy: 0.8885217905044556, Time: 455.343384 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.251, 'server_momentum': 0.34724526441593756, 'batch_size': 8, 'heur_acc': 0.8885217905044556, 'fedavg_acc': 0.88544863, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+10 clients, skew=0.4
+Gridsearch on 1 configurations. (18/01/2022 14:09:04)
+1. configuration finished (Accuracy: 0.882606029510498, Time: 449.190932 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.882606029510498, 'fedavg_acc': 0.8887139, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:16:33)
+1. configuration finished (Accuracy: 0.8823755383491516, Time: 459.593387 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.38543780389587345, 'server_momentum': 0.38601307724859046, 'batch_size': 8, 'heur_acc': 0.8823755383491516, 'fedavg_acc': 0.8887139, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:24:13)
+1. configuration finished (Accuracy: 0.8819145560264587, Time: 460.861229 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.5599999999999999, 'server_momentum': 0.2631578947368421, 'batch_size': 8, 'heur_acc': 0.8819145560264587, 'fedavg_acc': 0.8887139, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:31:53)
+1. configuration finished (Accuracy: 0.8817608952522278, Time: 457.811372 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.20999999999999996, 'server_momentum': 0.35505178569464346, 'batch_size': 8, 'heur_acc': 0.8817608952522278, 'fedavg_acc': 0.8887139, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+10 clients, skew=1.0
+Gridsearch on 1 configurations. (18/01/2022 14:39:31)
+1. configuration finished (Accuracy: 0.8794944286346436, Time: 456.851118 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8794944286346436, 'fedavg_acc': 0.88483405, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:47:08)
+1. configuration finished (Accuracy: 0.8645128607749939, Time: 248.777627 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.4583749484690882, 'server_momentum': 0.2532851468119087, 'batch_size': 16, 'heur_acc': 0.8645128607749939, 'fedavg_acc': 0.88483405, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:51:17)
+1. configuration finished (Accuracy: 0.884027361869812, Time: 469.618743 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5599999999999999, 'server_momentum': 0.2857142857142857, 'batch_size': 8, 'heur_acc': 0.884027361869812, 'fedavg_acc': 0.88483405, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 14:59:07)
+1. configuration finished (Accuracy: 0.8815688490867615, Time: 464.817745 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.357, 'server_momentum': 0.3122805696121158, 'batch_size': 8, 'heur_acc': 0.8815688490867615, 'fedavg_acc': 0.88483405, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+10 clients, skew=2.0
+Gridsearch on 1 configurations. (18/01/2022 15:06:51)
+1. configuration finished (Accuracy: 0.8799554109573364, Time: 453.747208 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8799554109573364, 'fedavg_acc': 0.8804164, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 15:14:25)
+1. configuration finished (Accuracy: 0.8786877393722534, Time: 461.125306 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.48138507719398826, 'server_momentum': 0.21808031996942268, 'batch_size': 8, 'heur_acc': 0.8786877393722534, 'fedavg_acc': 0.8804164, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 15:22:06)
+1. configuration finished (Accuracy: 0.8815304040908813, Time: 465.896346 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.5599999999999999, 'server_momentum': 0.2857142857142857, 'batch_size': 8, 'heur_acc': 0.8815304040908813, 'fedavg_acc': 0.8804164, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 15:29:52)
+1. configuration finished (Accuracy: 0.877689003944397, Time: 451.657980 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.39699999999999996, 'server_momentum': 0.32846215563614717, 'batch_size': 8, 'heur_acc': 0.877689003944397, 'fedavg_acc': 0.8804164, 'dataset': 'svhn_cropped', 'nr_clients': 10, 'skew_type': 'qty'}
+20 clients, skew=0.1
+Gridsearch on 1 configurations. (18/01/2022 15:37:24)
+1. configuration finished (Accuracy: 0.8809157609939575, Time: 469.910133 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8809157609939575, 'fedavg_acc': 0.8844883, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 15:45:14)
+1. configuration finished (Accuracy: 0.8718883991241455, Time: 286.840646 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.4359979387635311, 'server_momentum': 0.35058847618657607, 'batch_size': 16, 'heur_acc': 0.8718883991241455, 'fedavg_acc': 0.8844883, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 15:50:01)
+1. configuration finished (Accuracy: 0.8814151883125305, Time: 468.532828 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.5599999999999999, 'server_momentum': 0.5263157894736842, 'batch_size': 8, 'heur_acc': 0.8814151883125305, 'fedavg_acc': 0.8844883, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 15:57:49)
+1. configuration finished (Accuracy: 0.878303587436676, Time: 476.009457 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.1, 'server_lr': 0.3175, 'server_momentum': 0.35762139385752734, 'batch_size': 8, 'heur_acc': 0.878303587436676, 'fedavg_acc': 0.8844883, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+20 clients, skew=0.4
+Gridsearch on 1 configurations. (18/01/2022 16:05:45)
+1. configuration finished (Accuracy: 0.8779578804969788, Time: 460.479865 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8779578804969788, 'fedavg_acc': 0.8776122, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 16:13:26)
+1. configuration finished (Accuracy: 0.878303587436676, Time: 459.036595 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.46012824030468075, 'server_momentum': 0.14677860136232712, 'batch_size': 8, 'heur_acc': 0.878303587436676, 'fedavg_acc': 0.8776122, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 16:21:05)
+1. configuration finished (Accuracy: 0.8751152157783508, Time: 454.310765 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.5599999999999999, 'server_momentum': 0.625, 'batch_size': 8, 'heur_acc': 0.8751152157783508, 'fedavg_acc': 0.8776122, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 16:28:39)
+1. configuration finished (Accuracy: 0.8713890314102173, Time: 471.686957 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 0.4, 'server_lr': 0.244, 'server_momentum': 0.30739608017493925, 'batch_size': 8, 'heur_acc': 0.8713890314102173, 'fedavg_acc': 0.8776122, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+20 clients, skew=1.0
+Gridsearch on 1 configurations. (18/01/2022 16:36:31)
+1. configuration finished (Accuracy: 0.8727719783782959, Time: 464.116388 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8727719783782959, 'fedavg_acc': 0.87730485, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 16:44:15)
+1. configuration finished (Accuracy: 0.8496081829071045, Time: 251.510794 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.4921756050616323, 'server_momentum': 0.3452606576845899, 'batch_size': 16, 'heur_acc': 0.8496081829071045, 'fedavg_acc': 0.87730485, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 16:48:27)
+1. configuration finished (Accuracy: 0.8745774030685425, Time: 455.820329 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.5599999999999999, 'server_momentum': 0.625, 'batch_size': 8, 'heur_acc': 0.8745774030685425, 'fedavg_acc': 0.87730485, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 16:56:03)
+1. configuration finished (Accuracy: 0.8700061440467834, Time: 460.176440 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 1.0, 'server_lr': 0.42700000000000005, 'server_momentum': 0.3575335731614424, 'batch_size': 8, 'heur_acc': 0.8700061440467834, 'fedavg_acc': 0.87730485, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+20 clients, skew=2.0
+Gridsearch on 1 configurations. (18/01/2022 17:03:43)
+1. configuration finished (Accuracy: 0.8692378401756287, Time: 459.460879 s)
+0 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.5, 'server_momentum': 0.412, 'batch_size': 8, 'heur_acc': 0.8692378401756287, 'fedavg_acc': 0.8728872, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 17:11:22)
+1. configuration finished (Accuracy: 0.8651659488677979, Time: 464.602029 s)
+1 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.4641238980575235, 'server_momentum': 0.3291775529983483, 'batch_size': 8, 'heur_acc': 0.8651659488677979, 'fedavg_acc': 0.8728872, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 17:19:07)
+1. configuration finished (Accuracy: 0.8730408549308777, Time: 484.110476 s)
+2 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.5599999999999999, 'server_momentum': 0.5263157894736842, 'batch_size': 8, 'heur_acc': 0.8730408549308777, 'fedavg_acc': 0.8728872, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Gridsearch on 1 configurations. (18/01/2022 17:27:11)
+1. configuration finished (Accuracy: 0.8641671538352966, Time: 460.043204 s)
+3 {'act_fn': 'relu', 'client_lr': 0.01, 'client_momentum': 0.01, 'epochs_per_round': 2, 'rounds': 30, 'runs': 1, 'skew': 2.0, 'server_lr': 0.386, 'server_momentum': 0.36175269892465717, 'batch_size': 8, 'heur_acc': 0.8641671538352966, 'fedavg_acc': 0.8728872, 'dataset': 'svhn_cropped', 'nr_clients': 20, 'skew_type': 'qty'}
+Traceback (most recent call last):
+  File "evaluate_heuristics.py", line 92, in <module>
+    file_name = (f"heur_results/heur_results_{dataset}_{datetime.now()}.json")
+NameError: name 'dataset' is not defined

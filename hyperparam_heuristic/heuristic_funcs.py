@@ -81,7 +81,7 @@ def momentum_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_o
             agg_mom = .412
         if v == 1:
             for i in range(nr_parties):
-                agg_mom += ratios[i] * moms[i]
+                agg_mom += ratios[i] / np.sum(ratios) * moms[i]
 
             agg_mom -= .37
 
