@@ -31,8 +31,8 @@ sleep 2
 
 # Create and activate new environment
 echo "Creating fresh virtual environment"
-python3 -m venv poseidon_fed
-source poseidon_fed/bin/activate
+python3 -m venv ~/poseidon_fed
+source ~/poseidon_fed/bin/activate
 
 # Install required packages
 echo "Installing required packages"
