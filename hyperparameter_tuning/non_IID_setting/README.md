@@ -1,8 +1,6 @@
 # Non-IID Scripts
 
-## Serverside
-
-### Python environments
+## Python environments
 
 Both experiments cannot use the same environment, but can be run either on CPU or GPU.
 
@@ -10,19 +8,19 @@ Make sure python `venv` is installed: `sudo apt install python3-venv`
 
 If you want to kill every running jupyter notebooks: `pkill jupyter`
 
-#### Decentralized
+### Decentralized
 
-Check Python version with `python3 -V`. It must be version 3.6. X or 3.7. X. If not, see [here](https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu).
+Check Python version with `python3 -V`. It must be version 3.6.X, 3.7.X, or 3.8.X. If not, see [here](https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu).
 
-Run the script to install the decentralized virtual environment on the server: `./install_dec_env.sh`. It will install the environment and launh ` jupyter notebook ` in background on port 8890.
+Run the script to install the decentralized virtual environment on the server: `./install_dec_env.sh`. It will install the environment and launch `jupyter notebook` in background on port 8890.
 
-To connect with the notebook on your own computer, do a ssh bridge like this: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to ` localhost:{LOCAL_PORT} ` on your browser.
+To connect with the notebook on your own computer, do a ssh bridge like this: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to `localhost:{LOCAL_PORT}` on your browser.
 
-Requirements installed by the script : `pip, wheel, jupyterlab, ipywidgets, numpy, talos, pandas, matplotlib, tensorflow_datasets, tensorflow_federated==0.18.0`
+Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, talos, pandas, matplotlib, tensorflow_datasets, tensorflow_federated==0.18.0`
 
-#### FedAvg
+### FedAvg
 
-##### CPU support
+#### CPU support
 
 Run the script to install the federated virtual environment on the server: `./install_fed_env.sh cpu`. It will install the environment and launch `jupyter notebook` in background on port 8891.
 
@@ -32,7 +30,7 @@ To connect with the notebook on your own computer, create an ssh bridge running:
 ```ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}```.
 Then go to `localhost:{LOCAL_PORT}` on your browser.
 
-##### GPU support
+#### GPU support
 
 For GPU support, CUDA has to be installed installed:
 
@@ -41,41 +39,43 @@ For GPU support, CUDA has to be installed installed:
   - Check the CUDA version installed with `nvcc --version`.
   - The `nvcc` version should correspond to the version displayed with the command `nvidia-smi`
   - To check all CUDA  versions, run:
-  ```
-  function lib_installed() { /sbin/ldconfig -N -v $(sed 's/:/ /' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep $1; }
-  function check() { lib_installed $1 && echo "$1 is installed" || echo "ERROR: $1 is NOT installed"; }
-  check libcuda
-  check libcudart
-  ```
+
+    ```{bash}
+    function lib_installed() { /sbin/ldconfig -N -v $(sed 's/:/ /' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep $1; }
+    function check() { lib_installed $1 && echo "$1 is installed" || echo "ERROR: $1 is NOT installed"; }
+    check libcuda
+    check libcudart
+    ```
 
 - cuDNN:
   - The script assumes cuDNN version 8.0.5
   - To check the cuDNN version installed, run:
-  ```
-  function lib_installed() { /sbin/ldconfig -N -v $(sed 's/:/ /' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep $1; }
-  function check() { lib_installed $1 && echo "$1 is installed" || echo "ERROR: $1 is NOT installed"; }
-  check libcudnn
-  ```
+
+    ```{bash}
+    function lib_installed() { /sbin/ldconfig -N -v $(sed 's/:/ /' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep $1; }
+    function check() { lib_installed $1 && echo "$1 is installed" || echo "ERROR: $1 is NOT installed"; }
+    check libcudnn
+    ```
 
 For other versions, change the `jax` version in the install script in accordance with [this document](https://github.com/google/jax/blob/main/README.md#pip-installation-gpu-cuda).
 
 Run the script to install the federated virtual environment on the server: `./install_fed_env.sh gpu`. It will install the environment and launch `jupyter notebook` in background on port 8889.
 
-Requirements installed by the script : `pip, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, jax, fedjax`
+Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, jax, fedjax`
 
 To connect with the notebook on your own computer, create an ssh bridge running:
 ```ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}```
 Then go to `localhost:{LOCAL_PORT}` on your browser.
 
-### Gridsearch Notebooks
+## Gridsearch Notebooks
 
 Possible `skew_type`'s are  `qty, label, feature` and  `iid` by default.
 
 Possible datasets can be found in [tensorflow datasets](https://www.tensorflow.org/datasets/catalog/overview).
 
-#### Decentralized
+### Decentralized
 
-##### `decentralized_non-iid` notebook
+#### `decentralized_non-iid` notebook
 
 What: perform hyperparameters gridsearch and intervals search in decentralized setting
 
@@ -101,9 +101,9 @@ The script will create a folder named `{dataset_name}_non_iid_res` . It will be 
 
 You can also tune the callbacks (i.e. early stopping) in the `experiment` function.
 
-#### FedAvg
+### FedAvg
 
-##### ```fedJAX_gridSearch``` notebook
+#### ```fedJAX_gridSearch``` notebook
 
 What: perform hyperparameters gridsearch or test accuracy with FedAvg
 
@@ -126,7 +126,7 @@ How:
 
 The script will output the result of the gridsearch performed by the `run` function in a text file with the format `{dataset_name}_{skew_type}_{skew}_{parties}clients.txt`. Each file contains tuples of (test_accuracy, hyperparameters used), ordered by test_accuracy.
 
-##### ```fedJAX_intervalSearch``` notebook
+#### ```fedJAX_intervalSearch``` notebook
 
 what: perform interval search with FedAvg
 
@@ -144,7 +144,7 @@ how:
 
 ## Results aggregation
 
-### Results aggregation notebooks
+## Results aggregation notebooks
 
 Requirements: `numpy, pandas`
 
