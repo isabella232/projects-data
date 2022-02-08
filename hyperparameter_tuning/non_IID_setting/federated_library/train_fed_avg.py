@@ -90,7 +90,7 @@ def train_fed_avg(params, ds, test_split, ds_info, custom_model=None,
     init_params = model.init(jax.random.PRNGKey(seed))
     server_state = algorithm.init(init_params)
     clients = []
-    
+
     for client_id, client_dataset in federated_data.clients():
         clients.append((client_id, client_dataset, jax.random.PRNGKey(seed)))
 
@@ -130,7 +130,7 @@ def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
         f"Gridsearch on {len(hp_grid)} configurations. "
         f"({datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
 
-    res = []
+    results = []
     for i, hp_config_params in enumerate(hp_grid):
         tic = time.time()
 
@@ -146,30 +146,26 @@ def fed_avg_gridsearch(params, ds, test_split, ds_info, display):
         mean_run_res = float(jnp.mean(jnp.array(run_res_list)))
         hp_config_formatted = deepcopy(hp_config_params)
         hp_config_formatted["act_fn"] = hp_config_formatted["act_fn"].__name__
-        res.append((mean_run_res, hp_config_formatted))
+        results.append((mean_run_res, hp_config_formatted))
 
         toc = time.time()
         print(
             f"{i + 1}. configuration finished (Accuracy: {mean_run_res}, "
             f"Time: {(toc - tic):2f} s)")
 
-    return res
+    return results
 
 
 def fed_avg_intervalsearch(params, ds, test_split, ds_info, display):
-    # list of tuples containing
     results = []
 
-    global interval
-
-    for interv in params['intervals']:
-        interval = interv
+    for interval in params['intervals']:
 
         acc_runs = np.zeros(params['runs'], dtype=object)
 
-        params['interval'] = interv
+        params['interval'] = interval
 
-        print(f'Training with params : {params}')
+        print(f'Training with params: {params}')
 
         for r in range(params['runs']):
             acc_runs[r] = train_fed_avg(
