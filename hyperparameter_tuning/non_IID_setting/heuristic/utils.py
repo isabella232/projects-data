@@ -59,3 +59,11 @@ def compute_accuracy(y, y_hat, grid):
     accs = np.sum((y_hat_proj.T - y) == 0, axis=1) / N
 
     return accs
+
+
+def mae(es):
+    return np.mean(np.abs(es))
+
+
+def std(es):
+    return np.std(np.abs(es))

@@ -1,9 +1,10 @@
 from collections import defaultdict
+import json
 
 import numpy as np
 import pandas as pd
 
-from constants import INPUT_HEUR
+from constants import INPUT_HEUR, DATASETS
 
 RESULTS_PATH = "../non_IID_setting/results_aggregation/non-IID_res"
 
@@ -93,3 +94,28 @@ def get_fedavg_acc(dataset, skew, nr_parties, type_of_skew):
         line = reader.readline()
         fedavg_data = eval(line)
     return fedavg_data[0]
+
+
+def load_heur_results(v, melt=True):
+    heur_results = {}
+
+    for dataset in DATASETS:
+        with open(f'heur_results/heur_{dataset}.json') as f:
+            heur_results[dataset] = json.load(f)
+
+    df = pd.concat(objs=(
+        pd.DataFrame.from_records(heur_results["mnist"][f"{v}"]),
+        pd.DataFrame.from_records(heur_results["emnist"][f"{v}"]),
+        pd.DataFrame.from_records(heur_results["svhn_cropped"][f"{v}"]),
+        pd.DataFrame.from_records(heur_results["cifar10"][f"{v}"]),
+    ),
+        ignore_index=True
+    )
+
+    df.rename(columns={"fedavg_acc": "grid_search_acc"}, inplace=True)
+
+    if melt:
+        df = pd.melt(df, id_vars=set(df.columns).difference(["grid_search_acc", "heur_acc"]),
+                     value_name="acc", var_name="res_type")
+
+    return df

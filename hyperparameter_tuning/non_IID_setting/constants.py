@@ -1,4 +1,5 @@
-SKEW_TYPES = ["feature", "label", "qty"]
+# Grid values for federated experiments
+
 DATASETS = ["mnist", "svhn_cropped", "cifar10", "emnist"]
 
 SKEWS = {

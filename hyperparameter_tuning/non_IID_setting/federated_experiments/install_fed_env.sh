@@ -26,7 +26,15 @@ fi
 
 # Clean old environment
 echo "Cleaning old environment"
-./clean.sh
+echo "Killing notebooks"
+pkill -f "jupyter.*8890"
+pkill -f "jupyter.*8891"
+
+echo "Remove environments and files"
+rm -rf ~/poseidon_fed/
+rm -rf __pycache__/
+rm -rf nohup.out
+
 sleep 2
 
 # Create and activate new environment
@@ -56,4 +64,10 @@ pip install fedjax
 echo -ne "\n"
 
 # Launch jupyter
-# ./run.sh
+nohup jupyter notebook --no-browser --allow-root --port=8891 &
+echo "Jupyter notebook launched on port 8891"
+
+sleep 2
+
+# Get notebook token
+jupyter notebook list

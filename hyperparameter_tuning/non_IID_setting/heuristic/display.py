@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from utils import baseline_results, mode, compute_accuracy
+from utils import baseline_results, mode, compute_accuracy, mae, std
 from read_data import get_client_res, get_fedavg_res
 from heuristic_funcs import aggregate_results
 from constants import HEUR_DICT, HP_GRID
@@ -33,7 +33,7 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
             # Calculate global hyperparameter using heuristics
             heuristic_res = [
                 aggregate_results(
-                    hps, accs, best_acc, ratios, type_of_skew, hp_name, v=v
+                    hps, accs, ratios, type_of_skew, hp_name, v=v
                 )[hp_out]
                 for v in versions
             ]
@@ -122,11 +122,3 @@ def print_results(agg_es, X, y, y_hat, hp_name, detailed=False):
 
     print(
         f"(mean: {np.mean(y):.3f}, variance: {np.var(y):.3f})")
-
-
-def mae(es):
-    return np.mean(np.abs(es))
-
-
-def std(es):
-    return np.std(np.abs(es))

@@ -1,44 +1,52 @@
 # Non-IID Scripts
 
+TODO
+
+## Cluster setup
+
+Local experiments are those computed by each client independently. Federated experiments are those computed jointly in a federated setting. The experiments are assumed to be conducted on a cluster, connected to the local computer via SSH.
+
+Check out `ic_cluster_setup.md` for details on how to set up an IC cluster from scratch.
+
 ## Python environments
 
-Both experiments cannot use the same environment, but can be run either on CPU or GPU.
+The experiments (local and federated) use different Python environments. Both can be run either on CPU or GPU.
 
-Make sure python `venv` is installed: `sudo apt install python3-venv`
+To make sure python `venv` is installed, run: `sudo apt install python3-venv`
 
-If you want to kill every running jupyter notebooks: `pkill jupyter`
+Side note: If you want to kill all running jupyter notebooks, run: `pkill jupyter`
 
-### Decentralized
+### Local
 
-Check Python version with `python3 -V`. It must be version 3.6.X, 3.7.X, or 3.8.X. If not, see [here](https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu).
+Check Python version with `python3 -V`. It must be version greater than 3.6.X. If not, see [here](https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu).
 
-Run the script to install the decentralized virtual environment on the server: `./install_dec_env.sh`. It will install the environment and launch `jupyter notebook` in background on port 8890.
+Run the script to install the local virtual environment on the server: `./local_experiments/install_local_env.sh`. It will install the environment and launch `jupyter notebook` in the background on port 8890.
 
-To connect with the notebook on your own computer, do a ssh bridge like this: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to `localhost:{LOCAL_PORT}` on your browser.
+To connect with the notebook on your own computer, open an SSH bridge like this: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to `localhost:{LOCAL_PORT}` on your browser.
 
 Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, talos, pandas, matplotlib, tensorflow_datasets, tensorflow_federated==0.18.0`
 
-### FedAvg
+### Federated
 
 #### CPU support
 
-Run the script to install the federated virtual environment on the server: `./install_fed_env.sh cpu`. It will install the environment and launch `jupyter notebook` in background on port 8891.
+Run the script to install the federated virtual environment on the server: `./federated_experiments/install_fed_env.sh cpu`. It will install the environment and launch `jupyter notebook` in background on port 8891.
 
-Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, jax, fedjax`
+Requirements installed by the script: `pip, talos, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, tensorflow_federated, jax, fedjax`
 
-To connect with the notebook on your own computer, create an ssh bridge running:
-```ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}```.
+To connect with the notebook on your own computer, open an SSH bridge running:
+`ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}`.
 Then go to `localhost:{LOCAL_PORT}` on your browser.
 
 #### GPU support
 
-For GPU support, CUDA has to be installed installed:
+For GPU support, CUDA has to be installed:
 
 - CUDA:
   - The script assumes CUDA version 11.
   - Check the CUDA version installed with `nvcc --version`.
   - The `nvcc` version should correspond to the version displayed with the command `nvidia-smi`
-  - To check all CUDA  versions, run:
+  - To check all installed CUDA versions, run:
 
     ```{bash}
     function lib_installed() { /sbin/ldconfig -N -v $(sed 's/:/ /' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep $1; }
@@ -59,25 +67,33 @@ For GPU support, CUDA has to be installed installed:
 
 For other versions, change the `jax` version in the install script in accordance with [this document](https://github.com/google/jax/blob/main/README.md#pip-installation-gpu-cuda).
 
-Run the script to install the federated virtual environment on the server: `./install_fed_env.sh gpu`. It will install the environment and launch `jupyter notebook` in background on port 8889.
+Run the script to install the federated virtual environment on the server: `./federated_experiments/install_fed_env.sh gpu`. It will install the environment and launch `jupyter notebook` in the background on port 8889.
 
-Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, jax, fedjax`
+Requirements installed by the script: `pip, talos, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, tensorflow_federated, jax, fedjax`
 
-To connect with the notebook on your own computer, create an ssh bridge running:
-```ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}```
+To connect with the notebook on your own computer, create an SSH bridge running:
+`ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}`
 Then go to `localhost:{LOCAL_PORT}` on your browser.
 
-## Gridsearch Notebooks
+## Python files
 
-Possible `skew_type`'s are  `qty, label, feature` and  `iid` by default.
+## `constants.py`
+
+File containing constants used throughout the experiments. It contains datasets, type and levels of skew.
+
+## Grid Search Notebooks
+
+Possible `skew_type`s are  `qty, label, feature`.
 
 Possible datasets can be found in [tensorflow datasets](https://www.tensorflow.org/datasets/catalog/overview).
 
-### Decentralized
+Our experiments make use of [`mnist`]([www.google.com](https://www.tensorflow.org/datasets/catalog/mnist)), [`emnist`](https://www.tensorflow.org/datasets/catalog/emnist), [`cifar10`](https://www.tensorflow.org/datasets/catalog/cifar10), and [`svhn_cropped`](https://www.tensorflow.org/datasets/catalog/svhn_cropped).
 
-#### `decentralized_non-iid` notebook
+### Local Experiments
 
-What: perform hyperparameters gridsearch and intervals search in decentralized setting
+#### `local_non-iid.ipynb` notebook
+
+What: individually perform grid search and interval search in a local setting
 
 How:
 
@@ -85,67 +101,66 @@ How:
     - call `load_tf_dataset`, then transform the `ds_test` with `tf.data.Dataset.from_tensor_slices` and generate batches with the `batch(n)` function.
 
 2. call the run function with the following arguments:
-    - hyperparameters: dict of lists whose keys are **act_fn**, **act_fn_approx** (not mandatory if `with_intervals` is set to `False`), **intervals** (not mandatory if `with_intervals` is set to `False`), **client_lr**, **client_momentum**, **batch_size**, **epochs**, **clients_set**, **skews_set**
-    - ds: dataset from `load_tf_dataset`
-
-    - test_dataset: transformed and batched test dataset from 1.
-    - ds_info: dataset information
-    - with_intervals: True if you want to do the intervals search
-    - display: True if you want to see the graphic representation of the distributions
+    - `hyperparams`: dict of lists whose keys are `act_fn`, `act_fn_approx` (not mandatory if `with_intervals` is set to `False`), `intervals` (not mandatory if `with_intervals` is set to `False`), `client_lr`, `client_momentum`, `batch_size`, `epochs`, `clients_set`, `skews_set`
+    - `ds`: dataset from `load_tf_dataset`
+    - `test_dataset`: transformed and batched test dataset from 1.
+    - `ds_info`: additional dataset information
+    - `with_intervals`: True if you want to perform interval search
+    - `display`: True if you want to see the visual representation of the distributions
 
 The script will create a folder named `{dataset_name}_non_iid_res` . It will be used to receive the results of the gridsearch. 3 types of files (or 2 if `with_intervals` is set to `False` ) will be generated:
 
-- text file with "distribution" keyword: number of samples and ratio per client for quantity skew, number of samples of each class per client for label skew
-- text file with "intervals" keyword: each line corresponds to a client and its best interval
+- text file with "distribution" keyword: number of samples and ratio per client for quantity skew, number of samples of each class per client for label skew.
+- text file with "intervals" keyword: each line corresponds to a client and its best interval.
 - other text files: result of the grid search, each line is a tuple (validation_accuracy, hyperparameters used), the file is ordered by validation_accuracy.
 
 You can also tune the callbacks (i.e. early stopping) in the `experiment` function.
 
-### FedAvg
+### Federated Experiments
 
-#### ```fedJAX_gridSearch``` notebook
+#### `fedJAX_gridSearch.ipynb` notebook
 
-What: perform hyperparameters gridsearch or test accuracy with FedAvg
+What: perform federated grid search
 
 How:
 
 1. Load dataset and generate test split
-    - call `load_tf_dataset`, then transform the `ds_test` with `fedjax.create_tf_dataset_for_clients(to_ClientData([x_test], [y_test], ds_info, train=False), ['0']).batch(50)`.
+    - call `load_tf_dataset`, then transform the test data `(x_test, y_test)` with `convert_to_federated_data(x_test, y_test, ds_info, is_train=False)`.
 
-2. You can either
-    - call the `run` function with the following arguments to run gridsearch:
-    - params: dict of lists whose keys are **act_fn**, **client_lr**, **server_lr**, **client_momentum**, **server_momentum**, **batch_size**, **epochs_per_round**, **rounds**, **runs** (int, not list), **clients_set**, **skews_set**
+2. You can then
+    - call the `run` function with the following arguments to run grid search:
+    - params: dict of hyperparameter configurations whose keys are `act_fn`, `client_lr`, `server_lr`, `client_momentum`, `server_momentum`, `batch_size`, `epochs_per_round`, `rounds`, `runs` (int, not list), `clients_set`, `skews_set`
     - ds: dataset from `load_tf_dataset`
-
     - test_split: test dataset from 1.
     - ds_info: dataset information
-    - display: True if you want to see the graphic representation of the distributions
+    - display: True if you want to see the visual representation of the distributions.
 
-    - call the `run_test` function to train and test with the given sets of  parameters
-        - same as above but params must be build in a different way, keys **client_lr**, **client_momentum**, **batch_size**, **clients_set** and **skews_set** must be a list such that entry `i` of each list is a set of parameters to test. You can change this behaviour at the beginning of the `run_test` function to add or remove tunable parameters.
+The script will return the result of the grid search performed by the `run` function in a text file with the format `{dataset_name}_{skew_type}_{skew}_{parties}clients.txt`. Each file contains tuples of (test_accuracy, hyperparameter configuration), sorted in descending order by test_accuracy.
 
-The script will output the result of the gridsearch performed by the `run` function in a text file with the format `{dataset_name}_{skew_type}_{skew}_{parties}clients.txt`. Each file contains tuples of (test_accuracy, hyperparameters used), ordered by test_accuracy.
+#### `fedJAX_intervalSearch.ipynb` notebook
 
-#### ```fedJAX_intervalSearch``` notebook
+What: perform interval search with FedAvg
 
-what: perform interval search with FedAvg
-
-how:
+How:
 
 1. Load dataset and generate test split
-    - call `load_tf_dataset`, then transform the `ds_test` with `fedjax.create_tf_dataset_for_clients(to_ClientData([x_test], [y_test], ds_info, train=False), ['0']).batch(50)`.
+    - call `load_tf_dataset`, then transform the test data `(x_test, y_test)` with `convert_to_federated_data(x_test, y_test, ds_info, is_train=False)`.
 
-2. call the `run` function to perform interval search on the given sets of parameters with the following arguments:
-    - params: dict of lists whose keys are **act_fn**, **intervals**, **client_lr**, **server_lr**, **client_momentum**, **server_momentum**, **batch_size**, **epochs_per_round**, **rounds**, **runs** (int, not list), **clients_set**, **skews_set**. Keys **client_lr**, **client_momentum**, **batch_size**, **clients_set** and **skews_set** must be a list such that entry `i` of each list is a set of parameters. You can change this behaviour at the beginning of the `run` function to add or remove tunable parameters.
+2. Call the `run` function to perform interval search on the given sets of parameters with the following arguments:
+    - params: dict of hyperparameter configurations whose keys are `act_fn`, `intervals`, `client_lr`, `server_lr`, `client_momentum`, `server_momentum`, `batch_size`, `epochs_per_round`, `rounds`, `runs` (int, not list), `clients_set`, `skews_set`. Keys `server_lr`, `server_momentum`, `batch_size`, `clients_set` and `skews_set` must be lists such that entry `i` of each list is a set of parameters. You can change this behaviour at the beginning of the `run` function to add or remove tunable parameters.
     - ds: dataset from `load_tf_dataset`
     - test_split: test dataset from 1.
     - ds_info: dataset information
-    - display: True if you want to see the graphic representation of the distributions
+    - display: True if you want to see the visual representation of the distributions.
 
 ## Results aggregation
 
 ## Results aggregation notebooks
 
-Requirements: `numpy, pandas`
+Requirements: `numpy`, `pandas`
 
-Choose the `DATASET`, `SKEW` and `PARTIES` and run the notebook to perform the decentralized results aggregation and get parameters for FedAvg following the method defined in the `get_res` function. You can change the aggregation method at will to try to get better or worse results with FedAvg. You can test the accuracy with `run_test` in `fedJAX_gridSearch`
+Choose the `DATASETS`, `SKEWS` and `NR_PARTIES` in `constants.py` and run the notebook to perform the local results aggregation and get parameters for FedAvg following the method defined in the `get_res` function. You can change the aggregation method at will to try to get better or worse results with FedAvg.
+
+## Heuristic
+
+For more details about the heuristic folder, check the README inside the folder.

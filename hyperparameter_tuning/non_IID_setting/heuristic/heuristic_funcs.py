@@ -4,7 +4,7 @@ from utils import closest_power, filter_outliers
 from constants import HEUR_DICT
 
 
-def lr_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
+def lr_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
     agg_lr = 0
     lrs = hp_values
     if v == 0:
@@ -35,7 +35,7 @@ def lr_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew
     return agg_lr
 
 
-def momentum_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
+def momentum_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
     agg_mom = 0
     moms = hp_values
     if type_of_skew == "feature":
@@ -95,7 +95,7 @@ def momentum_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_o
     return agg_mom
 
 
-def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type_of_skew, v=0):
+def batch_size_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
     agg_bs = 0
     batch_sizes = hp_values
     if type_of_skew == "feature":
@@ -139,7 +139,7 @@ def batch_size_heuristic(ratios, nr_parties, hp_values, best_acc, val_accs, type
     return closest_power(agg_bs)
 
 
-def aggregate_results(hps, accs, best_acc, ratios, type_of_skew, hp_name=None, v=0):
+def aggregate_results(hps, accs, ratios, type_of_skew, hp_name=None, v=0):
     nr_parties = len(ratios)
 
     heuristic_fns = dict(
@@ -153,7 +153,6 @@ def aggregate_results(hps, accs, best_acc, ratios, type_of_skew, hp_name=None, v
             heuristic_fns[hp_name](ratios=ratios,
                                    nr_parties=nr_parties,
                                    hp_values=hps[hp_in],
-                                   best_acc=best_acc,
                                    val_accs=accs,
                                    type_of_skew=type_of_skew,
                                    v=v)
@@ -164,7 +163,6 @@ def aggregate_results(hps, accs, best_acc, ratios, type_of_skew, hp_name=None, v
             hp_out = HEUR_DICT[hp]["out"]
             agg_params[HEUR_DICT[hp]["out"]] = \
                 heur_fn(ratios=ratios, nr_parties=nr_parties, hp_values=hps[hp_in],
-                        best_acc=best_acc, val_accs=accs,
-                        type_of_skew=type_of_skew, v=v)
+                        val_accs=accs, type_of_skew=type_of_skew, v=v)
 
     return agg_params
