@@ -1,28 +1,28 @@
 # Non-IID Scripts
 
-TODO
+The Non-IID scripts contain experiments in a federated setting (with clients collaboratively training a joint model).
 
 ## Cluster setup
 
-Local experiments are those computed by each client independently. Federated experiments are those computed jointly in a federated setting. The experiments are assumed to be conducted on a cluster, connected to the local computer via SSH.
+Local experiments are those computed by each client independently. Federated experiments are those computed using Federated Averaging. The experiments are assumed to be conducted on a cluster, connected to the user device via SSH.
 
-Check out `ic_cluster_setup.md` for details on how to set up an IC cluster from scratch.
+Check out `ic_cluster_setup.md` for details on setting up the IC cluster running Ubuntu 20.04 from scratch.
 
 ## Python environments
 
 The experiments (local and federated) use different Python environments. Both can be run either on CPU or GPU.
 
-To make sure python `venv` is installed, run: `sudo apt install python3-venv`
+To create the necessary Python virtual envirnments, make sure `python3-venv` is installed.
 
 Side note: If you want to kill all running jupyter notebooks, run: `pkill jupyter`
 
 ### Local
 
-Check Python version with `python3 -V`. It must be version greater than 3.6.X. If not, see [here](https://unix.stackexchange.com/questions/410579/change-the-python3-default-version-in-ubuntu).
+Check Python version with `python3 -V`. It must be version greater or equal 3.6.X.
 
 Run the script to install the local virtual environment on the server: `./local_experiments/install_local_env.sh`. It will install the environment and launch `jupyter notebook` in the background on port 8890.
 
-To connect with the notebook on your own computer, open an SSH bridge like this: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to `localhost:{LOCAL_PORT}` on your browser.
+To connect with the notebook from your device, open an SSH bridge running: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to `localhost:{LOCAL_PORT}` on your browser.
 
 Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, talos, pandas, matplotlib, tensorflow_datasets, tensorflow_federated==0.18.0`
 
@@ -67,23 +67,23 @@ For GPU support, CUDA has to be installed:
 
 For other versions, change the `jax` version in the install script in accordance with [this document](https://github.com/google/jax/blob/main/README.md#pip-installation-gpu-cuda).
 
-Run the script to install the federated virtual environment on the server: `./federated_experiments/install_fed_env.sh gpu`. It will install the environment and launch `jupyter notebook` in the background on port 8889.
+Run the following script to install the federated virtual environment on the server: `./federated_experiments/install_fed_env.sh gpu`. It will install the virtual environment and launch `jupyter notebook` in the background on port 8889.
 
 Requirements installed by the script: `pip, talos, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, tensorflow_federated, jax, fedjax`
 
-To connect with the notebook on your own computer, create an SSH bridge running:
-`ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}`
+To connect with the notebook from your device, create an SSH bridge running:
+`ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8889 {server_user}@{server_address}`
 Then go to `localhost:{LOCAL_PORT}` on your browser.
 
 ## Python files
 
 ## `constants.py`
 
-File containing constants used throughout the experiments. It contains datasets, type and levels of skew.
+File containing constants used throughout the experiments. It contains datasets, types and levels of skew, as well as the hyperparameter grids. It serves as ground truth for experiments.
 
 ## Grid Search Notebooks
 
-Possible `skew_type`s are  `qty, label, feature`.
+Possible `skew_type`s are `qty, label, feature`.
 
 Possible datasets can be found in [tensorflow datasets](https://www.tensorflow.org/datasets/catalog/overview).
 
@@ -93,7 +93,7 @@ Our experiments make use of [`mnist`]([www.google.com](https://www.tensorflow.or
 
 #### `local_non-iid.ipynb` notebook
 
-What: individually perform grid search and interval search in a local setting
+What: individually perform grid search and interval search on each client individually (in a local setting)
 
 How:
 
@@ -155,7 +155,21 @@ How:
 
 ## Results aggregation
 
-## Results aggregation notebooks
+## Federated grid search results
+
+In the `fed_grid_search_results/` folder, find the results of the federated grid search experiments for multiple distribution skews and datasets. The hyperparameter grid contains multiple server hyperparamater configurations. In every file, hyperparameter configurations are sorted decreasingly with respect to validation accuracy.
+
+## Non-IID results
+
+In the `non-IID_res/` folder, find the results of:
+
+- `fedavg` (deprecated): federated grid search with grid containing multiple client hyperparameters configurations, and server hyperparameters kept fixed. The results of these experiments are deprecated.
+- `individual`: local grid search, performed on every client independently.
+- `intervals`: federated grid search with different values of activation function approximation intervals.
+
+### Results aggregation notebooks
+
+Since these notebooks use the `fedavg` results, the notebooks are deprecated.
 
 Requirements: `numpy`, `pandas`
 
@@ -163,4 +177,4 @@ Choose the `DATASETS`, `SKEWS` and `NR_PARTIES` in `constants.py` and run the no
 
 ## Heuristic
 
-For more details about the heuristic folder, check the README inside the folder.
+For more details on the development of the heuristic functions, check out the README file inside the `heuristic/` folder.

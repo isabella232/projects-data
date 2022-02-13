@@ -1,23 +1,39 @@
 from collections import defaultdict
 import json
+import ast
 
 import numpy as np
 import pandas as pd
 
 from constants import INPUT_HEUR, DATASETS
 
-RESULTS_PATH = "../non_IID_setting/results_aggregation/non-IID_res"
+RESULTS_PATH = "../results_aggregation"
 
 
-def get_client_res(dataset, skew, nr_parties, type_of_skew, hp_name=None):
-    experiment_directory = (f"{RESULTS_PATH}/{type_of_skew}_skew/"
-                            f"{dataset.upper()}_non-IID_{type_of_skew}_skew/"
+def get_local_res(dataset_name, skew, nr_parties, type_of_skew, hp_name=None):
+    """ Read optimal client hyperparameters from local experiments.
+
+    Args:
+        dataset_name (str): Name of dataset.
+        skew (float): Value of distribution skew.
+        nr_parties (int): Number of clients.
+        type_of_skew (str): Type of distribution skew.
+        hp_name (str, optional): Name of hyperparameter. Defaults to None.
+
+    Returns:
+        best_hp (list): List of optimal local client hyperparameter values.
+        accuracies (list): List of optimal local client validation accuracies.
+        best_acc (float): Maximal validation accuracy among clients.
+        arr_ratios (list): List of local data sample ratios.
+    """
+    experiment_directory = (f"{RESULTS_PATH}/non-IID_res/{type_of_skew}_skew/"
+                            f"{dataset_name.upper()}_non-IID_{type_of_skew}_skew/"
                             f"{nr_parties}_parties")
 
     if type_of_skew == "qty":
         distributions = []
         with open(
-                f"{experiment_directory}/individual/{skew}/{dataset}_qty_skew_"
+                f"{experiment_directory}/individual/{skew}/{dataset_name}_qty_skew_"
                 f"{skew}_{nr_parties}clients_distribution.txt", "r") as reader:
             for i in range(nr_parties):
                 distributions.append(reader.readline())
@@ -55,9 +71,8 @@ def get_client_res(dataset, skew, nr_parties, type_of_skew, hp_name=None):
 
         except FileNotFoundError as e:
             print(
-                f"File for client {i} in {dataset} ({skew}, {nr_parties}, "
+                f"File for client {i} in {dataset_name} ({skew}, {nr_parties}, "
                 f"{type_of_skew}) does not exist.")
-            # print(file_path)
             # raise e
 
     best_acc = np.max(accuracies)
@@ -67,36 +82,71 @@ def get_client_res(dataset, skew, nr_parties, type_of_skew, hp_name=None):
     else:
         arr_ratios = np.array(ratios)
 
-    return best_hp, accuracies, best_acc, arr_ratios
+    return best_hp, accuracies, best_acc, list(arr_ratios)
 
 
-def get_fedavg_res(dataset, skew, nr_parties, type_of_skew):
+def get_federated_res(dataset_name, skew, nr_parties, type_of_skew):
+    """ Read optimal hyperparameter configuration of federated grid search
+    on particular distribution skew setting.
+
+    Args:
+        dataset_name (str): Name of dataset
+        skew (float): Distribution skew parameter value.
+        nr_parties (int):  Number of clients.
+        type_of_skew (str): Type of distribution skew.
+
+    Returns:
+        dict: Dictionary containing optimal hyperparameter configuration.
+    """
     experiment_directory = f"{RESULTS_PATH}/fed_grid_search_results"
 
     # Get FEDAVG data
-    with open(f"{experiment_directory}/{dataset.lower()}_{type_of_skew}_skew_"
+    with open(f"{experiment_directory}/{dataset_name.lower()}_{type_of_skew}_skew_"
               f"{skew}_{nr_parties}clients.txt", "r") as reader:
         line = reader.readline()
 
         while not line.startswith("\'client_lr\':"):
             line = line[1:]
-        fedavg_data = eval("{" + line[:-2])
+        fedavg_data = ast.literal_eval("{" + line[:-2])
 
     return fedavg_data
 
 
-def get_fedavg_acc(dataset, skew, nr_parties, type_of_skew):
+def get_federated_val_acc(dataset_name, skew, nr_parties, type_of_skew):
+    """ Read best validation accuracy of federated grid search experiment for specific setting.
+
+    Args:
+        dataset_name (str): Name of dataset
+        skew (float): Distribution skew parameter value
+        nr_parties (int): Number of clients
+        type_of_skew (str): Type of distribution skew.
+
+    Returns:
+        float: Validation accuracy of optimal federated grid search global hyperparameter configuration.
+    """
     experiment_directory = f"{RESULTS_PATH}/fed_grid_search_results"
 
-    # Get FEDAVG data
-    with open(f"{experiment_directory}/{dataset.lower()}_{type_of_skew}_skew_"
+    # Get federated grid search data
+    with open(f"{experiment_directory}/{dataset_name.lower()}_{type_of_skew}_skew_"
               f"{skew}_{nr_parties}clients.txt", "r") as reader:
         line = reader.readline()
-        fedavg_data = eval(line)
-    return fedavg_data[0]
+        # Read only first line, since results sorted in decreasing order
+        fedavg_data = ast.literal_eval(line)
+
+    val_acc = fedavg_data[0]
+    return val_acc
 
 
 def load_heur_results(v, melt=True):
+    """ Read heuristic function evaluation results into dataframe
+
+    Args:
+        v (int): Version of heuristic function.
+        melt (bool, optional): If True, unpivot DataFrame from wide to long format. Defaults to True.
+
+    Returns:
+        pd.DataFrame: DataFrame containing heuristic function evaluation results.
+    """
     heur_results = {}
 
     for dataset in DATASETS:
@@ -104,10 +154,8 @@ def load_heur_results(v, melt=True):
             heur_results[dataset] = json.load(f)
 
     df = pd.concat(objs=(
-        pd.DataFrame.from_records(heur_results["mnist"][f"{v}"]),
-        pd.DataFrame.from_records(heur_results["emnist"][f"{v}"]),
-        pd.DataFrame.from_records(heur_results["svhn_cropped"][f"{v}"]),
-        pd.DataFrame.from_records(heur_results["cifar10"][f"{v}"]),
+        pd.DataFrame.from_records(heur_results[d][f"{v}"])
+        for d in DATASETS
     ),
         ignore_index=True
     )
@@ -115,7 +163,8 @@ def load_heur_results(v, melt=True):
     df.rename(columns={"fedavg_acc": "grid_search_acc"}, inplace=True)
 
     if melt:
-        df = pd.melt(df, id_vars=set(df.columns).difference(["grid_search_acc", "heur_acc"]),
-                     value_name="acc", var_name="res_type")
+        df = pd.melt(df, id_vars=set(df.columns).difference(
+            ["grid_search_acc", "heur_acc"]),
+            value_name="acc", var_name="res_type")
 
     return df

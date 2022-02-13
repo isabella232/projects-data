@@ -163,7 +163,7 @@ class CIFAR10Model(hk.Module):
 
 
 def get_model(params, ds_info, custom_model=None) -> Model:
-    """ Get default haiku model for mnist, emnist, svhn or cifar10
+    """ Get default haiku model for mnist, emnist, svhn, cifar10,
         or a custom haiku model
 
     :param params: parameters dict for the model, especially activation function 'act_fn'

@@ -5,6 +5,19 @@ from constants import HEUR_DICT
 
 
 def lr_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
+    """ Learning rate heuristic function.
+
+    Args:
+        ratios (list): List of ratio of data samples of every client.
+        nr_parties (int): Number of clients.
+        hp_values (list): List of optimal local learning rates of every client.
+        val_accs (list): List of local validation accuracy of every client
+        type_of_skew (str): Type of distribution skew of data.
+        v (int, optional): Version of heuristic function. Defaults to 0.
+
+    Returns:
+        float: Global learning rate returned by heuristic function.
+    """
     agg_lr = 0
     lrs = hp_values
     if v == 0:
@@ -36,6 +49,19 @@ def lr_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
 
 
 def momentum_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
+    """ Momentum heuristic function.
+
+    Args:
+        ratios (list): List of ratio of data samples of every client.
+        nr_parties (int): Number of clients.
+        hp_values (list): List of optimal local momentums of every client.
+        val_accs (list): List of local validation accuracy of every client
+        type_of_skew (str): Type of distribution skew of data.
+        v (int, optional): Version of heuristic function. Defaults to 0.
+
+    Returns:
+        float: Global momentum returned by heuristic function.
+    """
     agg_mom = 0
     moms = hp_values
     if type_of_skew == "feature":
@@ -96,6 +122,19 @@ def momentum_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=
 
 
 def batch_size_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, v=0):
+    """ Batch size heuristic function.
+
+    Args:
+        ratios (list): List of ratio of data samples of every client.
+        nr_parties (int): Number of clients.
+        hp_values (list): List of optimal local batch sizes of every client.
+        val_accs (list): List of local validation accuracy of every client
+        type_of_skew (str): Type of distribution skew of data.
+        v (int, optional): Version of heuristic function. Defaults to 0.
+
+    Returns:
+        float: Batch size returned by heuristic function.
+    """
     agg_bs = 0
     batch_sizes = hp_values
     if type_of_skew == "feature":
@@ -140,12 +179,28 @@ def batch_size_heuristic(ratios, nr_parties, hp_values, val_accs, type_of_skew, 
 
 
 def aggregate_results(hps, accs, ratios, type_of_skew, hp_name=None, v=0):
+    """ Function performing heuristic functions for a single or all
+    hyperparameters.
+
+    Args:
+        hps (list): List of optimal local hyperparameters for each client.
+        accs (list): List of local validation accuracy for each client.
+        ratios (list): List of data sample ratios for each client.
+        type_of_skew (str): Type of distribution skew of data.
+        hp_name (str, optional): Name of hyperparameter. Defaults to None.
+        v (int, optional): Version of heuristic function. Defaults to 0.
+
+    Returns:
+        dict: Dictionary with hyperparameter name as key and hyperparameter value returned by heuristic functions
+        as value.
+    """
     nr_parties = len(ratios)
 
     heuristic_fns = dict(
-        zip(HEUR_DICT.keys(), [lr_heuristic, momentum_heuristic, batch_size_heuristic]))
+        zip(["lr", "mom", "bs"], [lr_heuristic, momentum_heuristic, batch_size_heuristic]))
 
     agg_params = dict()
+    # Only perform heuristic function for a single hyperparameter
     if hp_name:
         hp_in = HEUR_DICT[hp_name]["in"]
         hp_out = HEUR_DICT[hp_name]["out"]
@@ -156,7 +211,7 @@ def aggregate_results(hps, accs, ratios, type_of_skew, hp_name=None, v=0):
                                    val_accs=accs,
                                    type_of_skew=type_of_skew,
                                    v=v)
-
+    # Perform heuristic function for all analyzed hyperparameters
     else:
         for hp, heur_fn in heuristic_fns.items():
             hp_in = HEUR_DICT[hp]["in"]

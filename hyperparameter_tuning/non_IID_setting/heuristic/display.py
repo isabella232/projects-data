@@ -5,12 +5,31 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from utils import baseline_results, mode, compute_accuracy, mae, std
-from read_data import get_client_res, get_fedavg_res
+from read_data import get_local_res, get_federated_res
 from heuristic_funcs import aggregate_results
 from constants import HEUR_DICT, HP_GRID
 
 
-def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, versions=(0, 1), plot=True):
+def get_heuristic_errors(dataset_name, skews, nrs_parties, type_of_skew, hp_name, versions=(1, 2, 3), plot=True):
+    """ Function returning the difference between hyperparameters from federated grid search and the heuristic functions
+    and baseline functions.
+
+    Args:
+        dataset_name (str): Name of the dataset.
+        skews (list): List of distribution skew values.
+        nrs_parties (list): List of number of clients.
+        type_of_skew (str): Type of distribution skew.
+        hp_name (str): Name of hyperparameter.
+        versions (tuple, optional): Versions of heuristic functions. Defaults to (1, 2, 3).
+        plot (bool, optional): If plot True, display boxplots of the heuristic
+        function outputs. Defaults to True.
+
+    Returns:
+        agg_errors (dict): Dictionary with version of heuristic function as key and error as value.
+        X (list): List of list containing local client hyperparameters.
+        y (list): Optimal hyperparameters from federated experiment results.
+        y_hat (list): Returned hyperparameters from heuristic function.
+    """
     agg_errors = defaultdict(list)
     X = []
     y = []
@@ -20,14 +39,14 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
     hp_out = HEUR_DICT[hp_name]["out"]
 
     if plot:
-        fig, ax = plt.subplots(nrows=len(skews), ncols=len(
+        _, ax = plt.subplots(nrows=len(skews), ncols=len(
             nrs_parties), figsize=(10, 20), sharey=True)
 
     for i, s in enumerate(skews):
         for j, p in enumerate(nrs_parties):
             # Get results of individual clients
-            hps, accs, best_acc, ratios = get_client_res(
-                dataset, s, p, type_of_skew, hp_name=hp_in
+            hps, accs, _, ratios = get_local_res(
+                dataset_name, s, p, type_of_skew, hp_name=hp_in
             )
 
             # Calculate global hyperparameter using heuristics
@@ -48,7 +67,7 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
             mode_res = mode_params[hp_out]
 
             # Get FEDAVG results (ground truth)
-            fedavg_params = get_fedavg_res(dataset, s, p, type_of_skew)
+            fedavg_params = get_federated_res(dataset_name, s, p, type_of_skew)
             fedavg_res = fedavg_params[hp_out]
 
             y_hat.append(heuristic_res)
@@ -78,7 +97,7 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
                     ax[i, j].set_yscale("log", base=2)
 
                 ax[i, j].set_title(
-                    f"{len(ratios)} clients, {type_of_skew} skew {s}, {dataset}")
+                    f"{len(ratios)} clients, {type_of_skew} skew {s}, {dataset_name}")
                 ax[i, j].set_xlabel("Number of clients")
                 ax[i, j].set_ylabel(hp_name)
                 ax[i, j].legend()
@@ -86,7 +105,19 @@ def get_dataset_results(dataset, skews, nrs_parties, type_of_skew, hp_name, vers
     return agg_errors, (X, y, y_hat)
 
 
-def print_results(agg_es, X, y, y_hat, hp_name, detailed=False):
+def print_heur_results(agg_es, X, y, y_hat, hp_name, detailed=False):
+    """ Display output of baselines and heuristic functions compared to the
+    optimal grid search hyperparameters.
+
+    Args:
+        agg_errors (dict): Dictionary with version of heuristic function as key and error as value.
+        X (list): List of list containing local client hyperparameters.
+        y (list): Optimal hyperparameters from federated experiment results.
+        y_hat (list): Returned hyperparameters from heuristic function.
+        hp_name (str): Name of hyperparameter.
+        detailed (bool, optional): If True, print inputs (X) and outputs (y, y_hat). Defaults to False.
+    """
+
     print("HEURISTIC RESULTS")
 
     accs = compute_accuracy(y, y_hat, HP_GRID[hp_name])
