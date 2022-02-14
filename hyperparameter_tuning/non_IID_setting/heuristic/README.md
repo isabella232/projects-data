@@ -46,7 +46,7 @@ Description: Visualize output of heuristic functions compared to optimal federat
 
 ### `evaluate_heuristics.ipynb`
 
-Description: Run evaluation of developed heuristic functions. We evaluate the performance of the constructed heuristic functions by performing federated learning using the returned global hyperparameters under multiple settings. We then compare the validation accuracy of the global hyperparameters found by the heuristic functions to the accuracy of the ones found by federated grid search.
+Description: Run evaluation of developed heuristic functions. We evaluate the performance of the constructed heuristic functions by performing federated learning using the returned global hyperparameters under multiple settings. We then compare the validation accuracy of the global hyperparameters found by the heuristic functions to the accuracy of the ones found by federated grid search. This notebook is expected to run using the federated Python environment installed in `non_IID_setting/federated_experiments/install_fed_env.sh`.
 
 ### `aggregate_heur_results.ipynb`
 

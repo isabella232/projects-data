@@ -18,11 +18,13 @@ Side note: If you want to kill all running jupyter notebooks, run: `pkill jupyte
 
 ### Local
 
-Check Python version with `python3 -V`. It must be version greater or equal 3.6.X.
+Check Python version with `python3 -V`. It must be version greater than or equal to 3.6.X.
 
 Run the script to install the local virtual environment on the server: `./local_experiments/install_local_env.sh`. It will install the environment and launch `jupyter notebook` in the background on port 8890.
 
-To connect with the notebook from your device, open an SSH bridge running: `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`. Then go to `localhost:{LOCAL_PORT}` on your browser.
+To connect with the notebook from your device, open an SSH bridge by running:
+`ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8890 {server_user}@{server_address}`.
+Then go to `localhost:{LOCAL_PORT}` on your browser.
 
 Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy, talos, pandas, matplotlib, tensorflow_datasets, tensorflow_federated==0.18.0`
 
@@ -30,11 +32,11 @@ Requirements installed by the script: `pip, wheel, jupyterlab, ipywidgets, numpy
 
 #### CPU support
 
-Run the script to install the federated virtual environment on the server: `./federated_experiments/install_fed_env.sh cpu`. It will install the environment and launch `jupyter notebook` in background on port 8891.
+Run the script to install the federated virtual environment on the server: `./federated_experiments/install_fed_env.sh cpu`. It will install the environment and launch `jupyter notebook` in the background on port 8891.
 
 Requirements installed by the script: `pip, talos, wheel, jupyterlab, ipywidgets, numpy, pandas, matplotlib, tensorflow_datasets, tensorflow_federated, jax, fedjax`
 
-To connect with the notebook on your own computer, open an SSH bridge running:
+To connect with the notebook on your own computer, open an SSH bridge by running:
 `ssh -N -f -L localhost:{LOCAL_PORT}:localhost:8891 {server_user}@{server_address}`.
 Then go to `localhost:{LOCAL_PORT}` on your browser.
 
@@ -83,7 +85,7 @@ File containing constants used throughout the experiments. It contains datasets,
 
 ## Grid Search Notebooks
 
-Possible `skew_type`s are `qty, label, feature`.
+Possible `skew_type`s are `qty`, `label`, and `feature`.
 
 Possible datasets can be found in [tensorflow datasets](https://www.tensorflow.org/datasets/catalog/overview).
 
@@ -93,7 +95,7 @@ Our experiments make use of [`mnist`]([www.google.com](https://www.tensorflow.or
 
 #### `local_non-iid.ipynb` notebook
 
-What: individually perform grid search and interval search on each client individually (in a local setting)
+What: individually perform grid search and interval search on each client (in a local setting)
 
 How:
 
@@ -112,7 +114,7 @@ The script will create a folder named `{dataset_name}_non_iid_res` . It will be 
 
 - text file with "distribution" keyword: number of samples and ratio per client for quantity skew, number of samples of each class per client for label skew.
 - text file with "intervals" keyword: each line corresponds to a client and its best interval.
-- other text files: result of the grid search, each line is a tuple (validation_accuracy, hyperparameters used), the file is ordered by validation_accuracy.
+- other text files: result of the grid search, each line is a tuple (validation_accuracy, hyperparameters used), the file is sorted in decreasing order by validation_accuracy.
 
 You can also tune the callbacks (i.e. early stopping) in the `experiment` function.
 
@@ -133,13 +135,13 @@ How:
     - ds: dataset from `load_tf_dataset`
     - test_split: test dataset from 1.
     - ds_info: dataset information
-    - display: True if you want to see the visual representation of the distributions.
+    - display: True if you want to display the visual representation of the distributions.
 
 The script will return the result of the grid search performed by the `run` function in a text file with the format `{dataset_name}_{skew_type}_{skew}_{parties}clients.txt`. Each file contains tuples of (test_accuracy, hyperparameter configuration), sorted in descending order by test_accuracy.
 
 #### `fedJAX_intervalSearch.ipynb` notebook
 
-What: perform interval search with FedAvg
+What: perform interval search with in a federated learning setting
 
 How:
 
@@ -147,17 +149,17 @@ How:
     - call `load_tf_dataset`, then transform the test data `(x_test, y_test)` with `convert_to_federated_data(x_test, y_test, ds_info, is_train=False)`.
 
 2. Call the `run` function to perform interval search on the given sets of parameters with the following arguments:
-    - params: dict of hyperparameter configurations whose keys are `act_fn`, `intervals`, `client_lr`, `server_lr`, `client_momentum`, `server_momentum`, `batch_size`, `epochs_per_round`, `rounds`, `runs` (int, not list), `clients_set`, `skews_set`. Keys `server_lr`, `server_momentum`, `batch_size`, `clients_set` and `skews_set` must be lists such that entry `i` of each list is a set of parameters. You can change this behaviour at the beginning of the `run` function to add or remove tunable parameters.
+    - params: dict of hyperparameter configurations whose keys are `act_fn`, `intervals`, `client_lr`, `server_lr`, `client_momentum`, `server_momentum`, `batch_size`, `epochs_per_round`, `rounds`, `runs` (int, not list), `clients_set`, `skews_set`. Keys `server_lr`, `server_momentum`, `batch_size`, `clients_set` and `skews_set` must be lists such that entry `i` of each list is a set of parameters. You can change this behavior at the beginning of the `run` function to add or remove tunable parameters.
     - ds: dataset from `load_tf_dataset`
     - test_split: test dataset from 1.
     - ds_info: dataset information
-    - display: True if you want to see the visual representation of the distributions.
+    - display: True if you want to display the visual representation of the distributions.
 
 ## Results aggregation
 
 ## Federated grid search results
 
-In the `fed_grid_search_results/` folder, find the results of the federated grid search experiments for multiple distribution skews and datasets. The hyperparameter grid contains multiple server hyperparamater configurations. In every file, hyperparameter configurations are sorted decreasingly with respect to validation accuracy.
+In the `fed_grid_search_results/` folder, find the results of the federated grid search experiments for multiple distribution skews and datasets. The hyperparameter grid contains multiple server hyperparameter configurations. In every file, hyperparameter configurations are sorted decreasingly with respect to validation accuracy.
 
 ## Non-IID results
 

@@ -90,7 +90,7 @@ From `train_fed_avg.train_fed_avg, l.54`: `iid_distrib(x_train, y_train, ds_info
 
 #### Example
 
-From `train_fed_avg.train_fed_avg, l.39`: `qty_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)`. `params["skew"]` is the parameter for the Dirichlet distribution ( `float` or `int` ).
+From `train_fed_avg.train_fed_avg, l.39`: `qty_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)`. `params["skew"]` is the parameter for the Dirichlet distribution (`float` or `int`).
 
 ### Function
 
@@ -98,7 +98,7 @@ From `train_fed_avg.train_fed_avg, l.39`: `qty_skew_distrib(x_train, y_train, ds
 
 #### Example
 
-From `train_fed_avg.train_fed_avg, l.44`: `label_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)`. `params["skew"]` is the parameter for the Dirichlet distribution ( `float` or `int` ).
+From `train_fed_avg.train_fed_avg, l.44`: `label_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)`. `params["skew"]` is the parameter for the Dirichlet distribution (`float` or `int`).
 
 ### Function
 
@@ -106,7 +106,7 @@ From `train_fed_avg.train_fed_avg, l.44`: `label_skew_distrib(x_train, y_train, 
 
 #### Example
 
-From `train_fed_avg.train_fed_avg, l.32`: `feature_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)`. `params["skew"]` is the parameter for the Gaussian distribution ( `float` or `int` ).
+From `train_fed_avg.train_fed_avg, l.32`: `feature_skew_distrib(x_train, y_train, ds_info, params['skew'], decentralized=False, display=display)`. `params["skew"]` is the parameter for the Gaussian distribution (`float` or `int`).
 
 ## `train_fed_avg.py`
 
@@ -126,7 +126,7 @@ From fedJAX notebooks: `train_fed_avg(params, ds, test_split, ds_info, custom_mo
 
 ### Description
 
-Metrics functions to be used with FedJAX.
+Metrics functions to be used with FedJAX. Currently contains implementation on mean squared error (MSE).
 
 ### Function
 
@@ -140,7 +140,7 @@ From `models_haiku.get_model, l.191`: `'loss': custom_metrics.MSELoss()`
 
 ### Description
 
-Get default haiku model for mnist, emnist, svhn_cropped or cifar10 or a custom haiku model.
+Get default haiku model for `mnist`, `emnist`, `svhn_cropped`, `cifar10`, or a custom haiku model.
 
 ### Function
 
@@ -154,7 +154,7 @@ From `train_fed_avg.train_fed_avg, l.77`: `model = get_model(params, ds_info, cu
 
 ### Description
 
-Get default keras model for mnist, emnist, svhn_cropped or cifar10 or a custom keras model.
+Get default keras model for `mnist`, `emnist`, `svhn_cropped`, `cifar10`, or a custom haiku model.
 
 ### Function
 
@@ -162,4 +162,4 @@ Get default keras model for mnist, emnist, svhn_cropped or cifar10 or a custom k
 
 #### Example
 
-From decentralized notebook, `experiment` function: `model = get_model(params, ds_info)`. If needed, `custom_model` must be a tensorflow/keras `Sequential` model.
+From `local_non-iid.ipynb` notebook, `experiment` function: `model = get_model(params, ds_info)`. If needed, `custom_model` must be a tensorflow/keras `Sequential` model.

@@ -62,7 +62,7 @@ The IC clusters contain 4 GPUs. However, the scripts only make use of one of the
 
 ## [Additional] Install Python with specific version
 
-To install a specifica Python version, run the following commands, where x is a number between 6 and 9.
+To install a specific Python version, run the following commands, where x is a number between 6 and 9.
 
 ```{bash}
 sudo apt install software-properties-common
